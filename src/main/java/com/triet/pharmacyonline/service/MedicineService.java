@@ -1,5 +1,6 @@
 package com.triet.pharmacyonline.service;
 
+import com.triet.pharmacyonline.model.DosageForm;
 import com.triet.pharmacyonline.model.Drug;
 import com.triet.pharmacyonline.dto.DrugDTO;
 import com.triet.pharmacyonline.utils.MySQLConnUtils;
@@ -13,6 +14,10 @@ import java.util.List;
 
 public class MedicineService implements IMedicineService {
     private static final String DRUGS_LIST = "SELECT * FROM vw_drugs_list AS dl;";
+    private static final String DOSAGE_FORMS_LIST = "SELECT " +
+                    "ds.id," +
+                    "ds.name " +
+                "FROM dosage_forms AS ds;";
 
     public List<DrugDTO> findAllDTO() {
         List<DrugDTO> drugsDTOList = new ArrayList<>();
@@ -27,6 +32,27 @@ public class MedicineService implements IMedicineService {
             MySQLConnUtils.printSQLException(e);
         }
         return drugsDTOList;
+    }
+
+    public List<DosageForm> getDosageForms() {
+        List<DosageForm> dosageForms = new ArrayList<>();
+        try {
+            Connection connection = MySQLConnUtils.getSqlConnection();
+            PreparedStatement statement = connection.prepareStatement(DOSAGE_FORMS_LIST);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                dosageForms.add(getDosageForm(rs));
+            }
+        } catch (SQLException e) {
+            MySQLConnUtils.printSQLException(e);
+        }
+        return dosageForms;
+    }
+
+    private DosageForm getDosageForm(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        return new DosageForm(id, name);
     }
 
     public DrugDTO getDrugDTO(ResultSet rs) throws SQLException {

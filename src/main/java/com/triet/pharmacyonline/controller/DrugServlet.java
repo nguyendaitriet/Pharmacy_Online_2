@@ -2,6 +2,7 @@ package com.triet.pharmacyonline.controller;
 
 
 import com.triet.pharmacyonline.dto.DrugDTO;
+import com.triet.pharmacyonline.model.DosageForm;
 import com.triet.pharmacyonline.model.Drug;
 import com.triet.pharmacyonline.service.MedicineService;
 
@@ -15,10 +16,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -102,7 +108,7 @@ public class DrugServlet extends HttpServlet {
         if (action == null) {
             action = "";
         }
-//        try {
+        try {
             switch (action) {
                 case "add":
                     addDrug(request, response);
@@ -114,28 +120,31 @@ public class DrugServlet extends HttpServlet {
 //                    removeDrug(request,response);
                     break;
             }
-//        } catch (SQLException ex) {
-//            throw new ServletException(ex);
-//        }
+        } catch (ParseException ex) {
+            throw new ServletException(ex);
+        }
 
     }
 
-    private void addDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void addDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         String drugName = request.getParameter("drugName");
         double drugContent = Double.parseDouble(request.getParameter("drugContent"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
-        long price = Long.parseLong(request.getParameter("price"));
+        long price = Long.parseLong(request.getParameter("price").replace(",",""));
         BigDecimal pricePerPill = BigDecimal.valueOf(price);
         int dosageForm = Integer.parseInt(request.getParameter("dosageForm"));
         String usage = request.getParameter("usage");
-        LocalDate productionDate = LocalDate.parse(request.getParameter("productionDate"));
-        LocalDate expirationDate = LocalDate.parse(request.getParameter("expirationDate"));
+        LocalDate productionDate = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("productionDate")).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate expirationDate = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("expirationDate")).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         String note = request.getParameter("note");
 
         Drug newDrug = new Drug(drugName, drugContent, quantity, pricePerPill, dosageForm, usage, productionDate, expirationDate, note);
+        List<DosageForm> dosageFormList = medicineService.getDosageForms();
+        request.setAttribute("dosageFormList", dosageFormList);
+
 //        boolean customerSaved = customerService.save(newCustomer);
 //        request.setAttribute("saveCustomer", customerSaved);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/add.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -147,6 +156,8 @@ public class DrugServlet extends HttpServlet {
     }
 
     private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<DosageForm> dosageFormList = medicineService.getDosageForms();
+        request.setAttribute("dosageFormList", dosageFormList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
         dispatcher.forward(request, response);
     }

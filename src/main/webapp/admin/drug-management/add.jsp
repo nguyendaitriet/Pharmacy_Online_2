@@ -86,19 +86,24 @@
 <%--                                            <input type="number" name="price" required="" value="0" class="form-control" id="price">--%>
 
                                             <label for="price">Price<span class="text-danger">*</span></label>
-                                            <input type="text" name="price" placeholder="" required=""
+                                            <input type="text" name="price" placeholder="" required="" data-mask="999,999,999.99"
                                                    value="0" class="form-control" id="price">
                                         </div>
 
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                                            <label for="dosageForm">Dosage Form<span class="text-danger">*</span></label>
-                                            <input type="password" name="dosageForm" required=""class="form-control" id="dosageForm">
+<%--                                            <input type="password" name="dosageForm" required="" class="form-control" id="dosageForm">--%>
+                                            <label for="dosageForm">Dosage Form</label>
+                                            <select class="form-control" data-toggle="select2" id="dosageForm" name="dosageForm">
+                                                <c:forEach var="dosageForm" items="${dosageFormList}">
+                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == 1 ? "selected" : ""}>${dosageForm.getName()}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
 
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="usage">Usage</label>
                                             <input type="text" name="usage" placeholder="Usage" class="form-control" id="usage">
-                                            <span class="font-14 text-muted">Example: Headache, Stomach ache</span>
+                                            <span class="font-14 text-muted mt-5">Example: Headache, Stomach ache</span>
                                         </div>
                                     </div>
 
@@ -107,7 +112,7 @@
                                             <label>Production Date</label>
                                             <div>
                                                 <div class="input-group">
-                                                    <input type="text" name="productionDate" class="form-control" placeholder="dd/mm/yyyy" data-provide="datepicker" data-date-autoclose="true">
+                                                    <input type="text" name="productionDate" class="form-control" placeholder="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                                     </div>
@@ -118,7 +123,7 @@
                                             <label>Expiration Date</label>
                                             <div>
                                                 <div class="input-group">
-                                                    <input type="text" name="expirationDate" class="form-control" placeholder="dd/mm/yyyy" data-provide="datepicker" data-date-autoclose="true">
+                                                    <input type="text" name="expirationDate" class="form-control" placeholder="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                                     </div>

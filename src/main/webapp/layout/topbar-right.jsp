@@ -1,0 +1,22 @@
+<ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+    <li>
+        <button class="button-menu-mobile waves-effect">
+            <i class="mdi mdi-menu"></i>
+        </button>
+    </li>
+
+    <li class="d-none d-lg-block">
+        <form class="app-search">
+            <div class="app-search-box">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <div class="input-group-append">
+                        <button class="btn" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </li>
+</ul>

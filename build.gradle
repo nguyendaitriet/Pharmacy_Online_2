@@ -27,9 +27,8 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 
-    // https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
-    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.13.Final'
 
 }
 

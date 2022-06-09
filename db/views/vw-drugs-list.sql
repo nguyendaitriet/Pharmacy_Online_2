@@ -14,4 +14,5 @@ CREATE VIEW `vw_drugs_list` AS
     FROM `drugs` AS`dr`
     JOIN `dosage_forms` `df` 
     ON `dr`.`dosageForm` = `df`.`id`
+    WHERE dr.deleted = 0
     ORDER BY `dr`.`id`;

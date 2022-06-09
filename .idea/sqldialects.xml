@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/db/data/order_items.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/db/store_procedures/sp_find_drug_by_id.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/db/tables/pharmacy_online_drugs.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/db/tables/pharmacy_online_order_items.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/db/views/vw-drugs-list.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/triet/pharmacyonline/service/MedicineService.java" dialect="GenericSQL" />
   </component>
 </project>

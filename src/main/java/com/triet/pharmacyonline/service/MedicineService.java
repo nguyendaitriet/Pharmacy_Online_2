@@ -15,9 +15,10 @@ import java.util.List;
 public class MedicineService implements IMedicineService {
     private static final String DRUGS_LIST = "SELECT * FROM vw_drugs_list AS dl;";
     private static final String DOSAGE_FORMS_LIST = "SELECT " +
-                    "ds.id," +
-                    "ds.name " +
-                "FROM dosage_forms AS ds;";
+                                                        "ds.id," +
+                                                        "ds.name " +
+                                                    "FROM dosage_forms AS ds;";
+    private static final String NEW_DRUG_ADD_SP = "CALL pharmacy_online.sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public List<DrugDTO> findAllDTO() {
         List<DrugDTO> drugsDTOList = new ArrayList<>();
@@ -105,7 +106,20 @@ public class MedicineService implements IMedicineService {
 
     @Override
     public boolean save(Drug drug) throws SQLException {
-        return false;
+        Connection connection = MySQLConnUtils.getSqlConnection();
+        CallableStatement statement = connection.prepareCall(NEW_DRUG_ADD_SP);
+        statement.setString(1, drug.getDrugName());
+        statement.setDouble(2, drug.getDrugContent());
+        statement.setInt(3, drug.getQuantity());
+        statement.setBigDecimal(4, drug.getPricePerPill());
+        statement.setString(5, drug.getUsage());
+        statement.setInt(6, drug.getDosageForm());
+        statement.setDate(7, java.sql.Date.valueOf(drug.getProductionDate()));
+        statement.setDate(8, java.sql.Date.valueOf(drug.getExpirationDate()));
+        statement.setString(9,drug.getNote());
+        statement.executeQuery();
+
+        return statement.getBoolean(10);
     }
 
     @Override

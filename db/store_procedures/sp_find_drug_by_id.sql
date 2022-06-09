@@ -16,7 +16,7 @@ BEGIN
        		`dr`.`expirationDate` AS `expirationDate`,
        		`dr`.`note` AS `note`
 	FROM drugs AS dr
-    WHERE dr.id = id;
+    WHERE dr.id = id AND dr.deleted = 0;
 END \\
 
 DELIMITER ;

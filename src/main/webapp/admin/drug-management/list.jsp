@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div style="float: right">
-                                            <a href="/customers?action=add" class="btn btn-outline-warning">
+                                            <a href="/drugs?action=add" class="btn btn-outline-warning">
                                                 <i class="fas fa-plus"></i>
                                                 <span> Add New Drug</span>
                                             </a>

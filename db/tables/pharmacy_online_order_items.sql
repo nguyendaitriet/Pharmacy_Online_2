@@ -23,12 +23,13 @@ DROP TABLE IF EXISTS `order_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_items` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `drugId` bigint NOT NULL,
-  `quantity` int NOT NULL,
-  `totalPrice` decimal(10,0) NOT NULL,
-  `orderId` bigint NOT NULL,
-  `creationDate` datetime NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `drugId` BIGINT NOT NULL,
+  `quantity` INT NOT NULL,
+  `totalPrice` DECIMAL(10,0) NOT NULL,
+  `orderId` BIGINT NOT NULL,
+  `creationDate` DATETIME NOT NULL,
+  `price` DECIMAL(10,0) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `drugId_idx` (`drugId`),

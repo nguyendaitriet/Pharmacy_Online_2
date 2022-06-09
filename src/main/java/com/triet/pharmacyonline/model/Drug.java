@@ -1,11 +1,11 @@
 package com.triet.pharmacyonline.model;
 
-import org.hibernate.validator.constraints.Length;
+import com.triet.pharmacyonline.utils.ValidationUtils;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,6 +13,7 @@ public class Drug {
     private long id;
     private String drugName;
     private double drugContent;
+
     private int quantity;
     private int dosageForm;
     private String usage;
@@ -50,6 +51,8 @@ public class Drug {
         this.note = note;
     }
 
+    @NotNull(message = "Dosage form must NOT be null.")
+    @Range(min = 1, max = 5, message = "Dosage form must be from 1 to 5.")
     public int getDosageForm() {
         return dosageForm;
     }
@@ -82,8 +85,8 @@ public class Drug {
         this.id = id;
     }
 
-    @NotEmpty
-    @Length(min = 3, max = 10)
+    @NotEmpty(message = "Drug name must NOT be empty")
+    @Pattern(regexp = ValidationUtils.NAME_REGEX, message = "Invalid name. Name must not contain digit or special character.")
     public String getDrugName() {
         return drugName;
     }
@@ -92,6 +95,9 @@ public class Drug {
         this.drugName = drugName;
     }
 
+    @NotNull(message = "Drug content must NOT be null.")
+    @Min(value = 0, message = "Drug content must be at least 0.")
+    @Max(value = 1000000, message = "Drug content must not be higher than 1000000.")
     public double getDrugContent() {
         return drugContent;
     }
@@ -100,9 +106,9 @@ public class Drug {
         this.drugContent = drugContent;
     }
 
-    @NotNull
-    @Min(18)
-    @Max(120)
+    @NotNull(message = "Quantity must NOT be null.")
+    @Min(value = 0, message = "Quantity must be at least 0.")
+    @Max(value = 5000000, message = "Quantity must not be higher than 5000000.")
     public int getQuantity() {
         return quantity;
     }
@@ -111,6 +117,9 @@ public class Drug {
         this.quantity = quantity;
     }
 
+    @NotNull(message = "Price must NOT be null.")
+    @Min(value = 0, message = "Quantity must be at least 0.")
+    @Max(value = 100000000, message = "Quantity must not be higher than 100000000.")
     public BigDecimal getPricePerPill() {
         return pricePerPill;
     }
@@ -119,6 +128,8 @@ public class Drug {
         this.pricePerPill = pricePerPill;
     }
 
+    @NotNull(message = "Production date must NOT be null.")
+    @PastOrPresent(message = "Production date must be today or in the past.")
     public LocalDate getProductionDate() {
         return productionDate;
     }
@@ -127,6 +138,8 @@ public class Drug {
         this.productionDate = productionDate;
     }
 
+    @NotNull(message = "Expiration date must NOT be null.")
+    @FutureOrPresent(message = "Expiration date must be in the future.")
     public LocalDate getExpirationDate() {
         return expirationDate;
     }

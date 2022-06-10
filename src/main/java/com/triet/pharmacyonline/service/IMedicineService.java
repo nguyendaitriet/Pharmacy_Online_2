@@ -19,4 +19,6 @@ public interface IMedicineService extends IGeneralService<Drug>{
 
     @Override
     boolean remove(long id) throws SQLException;
+
+    boolean isDrugExisted(Drug newDrug) throws SQLException;
 }

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Drug {
     private long id;
@@ -85,8 +86,9 @@ public class Drug {
         this.id = id;
     }
 
-    @NotEmpty(message = "Drug name must NOT be empty")
-    @Pattern(regexp = ValidationUtils.NAME_REGEX, message = "Invalid name. Name must not contain digit or special character.")
+    @NotEmpty(message = "Drug name must NOT be empty.")
+    @Pattern(regexp = ValidationUtils.DRUG_NAME_REGEX,
+            message = "Drug Name must NOT contain DIGIT, SPECIAL CHARACTER or redundant WHITESPACE. And CAPITALIZE first letter of name.")
     public String getDrugName() {
         return drugName;
     }
@@ -154,6 +156,19 @@ public class Drug {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Drug drug = (Drug) o;
+        return Double.compare(drug.drugContent, drugContent) == 0 && Objects.equals(drugName, drug.drugName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(drugName, drugContent);
     }
 }
 

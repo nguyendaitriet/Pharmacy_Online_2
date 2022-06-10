@@ -75,9 +75,8 @@
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="drugName">Drug Name<span class="text-danger">*</span></label>
                                             <input type="text" name="drugName" parsley-trigger="change" required="" placeholder="Drug Name" class="form-control" id="drugName"
-                                            value="${newDrug.getDrugName()}"
-                                            >
-                                            <span class="font-14 text-muted">Example: Paracetamol</span>
+                                                   value="${newDrug.getDrugName()}">
+                                            <span class="font-15 text-muted">Example: Paracetamol</span>
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="drugContent">Drug Content (mg)<span class="text-danger">*</span></label>
@@ -93,13 +92,14 @@
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="price">Price (VND)<span class="text-danger">*</span></label>
                                             <input type="text" name="price" placeholder="" required="" data-mask="999,999,999.99"
-                                                   value="${dosageForm.getPrice()}" class="form-control" id="price">
+                                                   value="${newDrug.getPricePerPill()}" class="form-control" id="price">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="dosageForm">Dosage Form</label>
                                             <select class="form-control" data-toggle="select2" id="dosageForm" name="dosageForm">
+                                                <option disabled ${newDrug == null ? "selected" : ""}>- Choose drug dosage form -</option>
                                                 <c:forEach var="dosageForm" items="${dosageFormList}">
-                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == 1 ? "selected" : ""}>${dosageForm.getName()}</option>
+                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == newDrug.getDosageForm() ? "selected" : ""}>${dosageForm.getName()}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -115,18 +115,23 @@
                                             <label>Production Date<span class="text-danger">*</span></label>
                                             <div>
                                                 <div class="input-group">
-                                                    <input required="" type="text" name="productionDate" class="form-control" placeholder="mm/dd/yyyy" data-provide="datepicker" data-date-autoclose="true">
+                                                    <input required="" type="text" name="productionDate" class="form-control"
+                                                           placeholder="mm/dd/yyyy" data-provide="datepicker" data-date-autoclose="true"
+                                                           value="${productionDate}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label>Expiration Date<span class="text-danger">*</span></label>
                                             <div>
                                                 <div class="input-group">
-                                                    <input required="" type="text" name="expirationDate" class="form-control" placeholder="mm/dd/yyyy" data-provide="datepicker" data-date-autoclose="true">
+                                                    <input required="" type="text" name="expirationDate" class="form-control"
+                                                           placeholder="mm/dd/yyyy" data-provide="datepicker" data-date-autoclose="true"
+                                                           value="${expirationDate}">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                                     </div>
@@ -138,37 +143,29 @@
                                             <input type="text" name="note" placeholder="Note" class="form-control" id="note" value="${newDrug.getNote()}">
                                         </div>
                                     </div>
+
                                     <div class="form-group text-right mb-0">
                                         <button class="btn btn-primary waves-effect waves-light mr-1" type="submit">
                                             Add
                                         </button>
-                                        <button type="reset" class="btn btn-secondary waves-effect waves-light">
-                                            Cancel
-                                        </button>
+                                        <a href="/drugs" class="btn btn-secondary waves-effect waves-light">
+                                            <span>Cancel</span>
+                                        </a>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <!-- end card -->
                     </div>
-                    <!-- end col -->
-
-                    <!-- end col -->
                 </div>
-
             </div>
-            <!-- end container-fluid -->
         </div>
-        <!-- end content -->
 
-        <!-- Footer Start -->
         <%@ include file="/layout/footer.jsp" %>
-        <!-- end Footer -->
         <c:if test="${errors != null}">
             <c:forEach var="error" items="${errors}">
                 <script>
                     iziToast.error({
-                        title: 'Hey',
+                        title: 'Error',
                         message: '${error.getMessage()}'
                     });
                 </script>
@@ -177,7 +174,7 @@
         <c:if test="${anotherError != null}">
             <script>
                 iziToast.error({
-                    title: 'Hey',
+                    title: 'Error',
                     message: '${anotherError}'
                 });
             </script>
@@ -195,6 +192,14 @@
                 iziToast.error({
                     title: 'Hey',
                     message: '${failed}'
+                });
+            </script>
+        </c:if>
+        <c:if test="${isDrugExist != null}">
+            <script>
+                iziToast.warning({
+                    title: 'Sorry',
+                    message: '${isDrugExist}'
                 });
             </script>
         </c:if>

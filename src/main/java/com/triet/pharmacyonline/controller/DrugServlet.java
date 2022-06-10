@@ -22,11 +22,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @WebServlet(name = "DrugServlet", value = "/drugs")
 public class DrugServlet extends HttpServlet {
-
 
     MedicineService medicineService = new MedicineService();
 
@@ -91,46 +91,32 @@ public class DrugServlet extends HttpServlet {
             Set<ConstraintViolation<Drug>> constraintViolations = validator.validate(newDrug);
 
             if (constraintViolations.isEmpty()) {
-                if (medicineService.save(newDrug)) {
-                    request.setAttribute("successfully", "Add new drug successfully!");
+                if (!medicineService.isDrugExisted(newDrug)) {
+                    if (medicineService.save(newDrug)) {
+                        request.setAttribute("successfully", "Successful operation!");
+                    } else {
+                        request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                    }
                 } else {
-                    request.setAttribute("failed", "Failed to add new drug. Please contact to manager!");
+                    request.setAttribute("isDrugExist", "Drug existed! Please enter another Drug Name or Drug Content.");
                 }
-//                List<DosageForm> dosageFormList = medicineService.getDosageForms();
-//                request.setAttribute("dosageFormList", dosageFormList);
-//
-//                RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
-//                dispatcher.forward(request, response);
-//                return;
             }
-//            request.setAttribute("newDrug", newDrug);
 
+            request.setAttribute("productionDate", newDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            request.setAttribute("expirationDate", newDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             request.setAttribute("errors", constraintViolations);
-
-//            List<DosageForm> dosageFormList = medicineService.getDosageForms();
-//            request.setAttribute("dosageFormList", dosageFormList);
-//
-//            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
-//            dispatcher.forward(request, response);
-        }
-        catch (ParseException ex){
-            anotherError = "Invalid Date";
+        } catch (ParseException ex) {
+            anotherError = "Invalid Date. Please enter with format mm/dd/yyyy";
             request.setAttribute("anotherError", anotherError);
-        }
-        catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             anotherError = "Invalid Number";
             request.setAttribute("anotherError", anotherError);
-        }
-        catch (ProductionDateException | ExpirationDateException p) {
+        } catch (ProductionDateException | ExpirationDateException p) {
+            request.setAttribute("productionDate", newDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            request.setAttribute("expirationDate", newDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             anotherError = p.getMessage();
-
-//            request.setAttribute("newDrug", newDrug);
-
             request.setAttribute("anotherError", anotherError);
-        }
-        finally {
-
+        } finally {
             request.setAttribute("newDrug", newDrug);
 
             List<DosageForm> dosageFormList = medicineService.getDosageForms();
@@ -141,28 +127,7 @@ public class DrugServlet extends HttpServlet {
         }
     }
 
-    public Drug getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException{
-//        String drugName = request.getParameter("drugName");
-//        double drugContent = Double.parseDouble(request.getParameter("drugContent"));
-//        int quantity = Integer.parseInt(request.getParameter("quantity"));
-//        long price = Long.parseLong(request.getParameter("price").replace(",", ""));
-//        BigDecimal pricePerPill = BigDecimal.valueOf(price);
-//        String usage = request.getParameter("usage");
-//        String note = request.getParameter("note");
-
-//        String productionDateGot = request.getParameter("productionDate");
-//        String expirationDateGot = request.getParameter("expirationDate");
-//        int dosageForm = Integer.parseInt(request.getParameter("dosageForm"));
-//        LocalDate productionDate = new SimpleDateFormat("MM/dd/yyyy").parse(productionDateGot).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        LocalDate expirationDate = new SimpleDateFormat("MM/dd/yyyy").parse(expirationDateGot).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        if (!ValidationUtils.checkProductionDate(productionDate)) {
-//            throw new ProductionDateException();
-//        }
-//        if (!ValidationUtils.checkExpirationDate(expirationDate)) {
-//            throw new ExpirationDateException();
-//        }
-//        return new Drug(drugName, drugContent, quantity, pricePerPill, dosageForm, usage, productionDate, expirationDate, note);
-
+    public Drug getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException {
         drug.setDrugName(request.getParameter("drugName"));
         drug.setDrugContent(Double.parseDouble(request.getParameter("drugContent")));
         drug.setQuantity(Integer.parseInt(request.getParameter("quantity")));
@@ -170,6 +135,7 @@ public class DrugServlet extends HttpServlet {
         drug.setPricePerPill(BigDecimal.valueOf(price));
         drug.setUsage(request.getParameter("usage"));
         drug.setNote(request.getParameter("note"));
+        drug.setDosageForm(Integer.parseInt(request.getParameter("dosageForm")));
 
         String productionDateGot = request.getParameter("productionDate");
         String expirationDateGot = request.getParameter("expirationDate");
@@ -183,7 +149,6 @@ public class DrugServlet extends HttpServlet {
         if (!ValidationUtils.checkExpirationDate(expirationDate)) {
             throw new ExpirationDateException();
         }
-        drug.setDosageForm(Integer.parseInt(request.getParameter("dosageForm")));
 
         return drug;
     }

@@ -13,18 +13,22 @@ import java.util.Date;
 import java.util.List;
 
 public class MedicineService implements IMedicineService {
-    private static final String DRUGS_LIST = "SELECT * FROM vw_drugs_list AS dl;";
+    private static final String DRUGS_LIST = "SELECT * FROM vw_drugs_list;";
+    private static final String DRUGS_LIST_DTO = "SELECT * FROM vw_drugs_list_dto;";
     private static final String DOSAGE_FORMS_LIST = "SELECT " +
                                                         "ds.id," +
                                                         "ds.name " +
                                                     "FROM dosage_forms AS ds;";
     private static final String NEW_DRUG_ADD_SP = "CALL pharmacy_online.sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String GET_DRUG_BY_ID = "CALL pharmacy_online.sp_find_drug_by_id(?)";
+    private static final String IS_DRUG_EXISTED = "CALL pharmacy_online.sp_is_drug_existed(?, ?, ?, ?, ?, ?, ?)";
+
 
     public List<DrugDTO> findAllDTO() {
         List<DrugDTO> drugsDTOList = new ArrayList<>();
         try {
             Connection connection = MySQLConnUtils.getSqlConnection();
-            PreparedStatement statement = connection.prepareStatement(DRUGS_LIST);
+            PreparedStatement statement = connection.prepareStatement(DRUGS_LIST_DTO);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 drugsDTOList.add(getDrugDTO(rs));
@@ -73,14 +77,25 @@ public class MedicineService implements IMedicineService {
 
     @Override
     public List<Drug> findAll() {
-        return null;
+        List<Drug> drugsList = new ArrayList<>();
+        try {
+            Connection connection = MySQLConnUtils.getSqlConnection();
+            PreparedStatement statement = connection.prepareStatement(DRUGS_LIST);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                drugsList.add(getDrug(rs));
+            }
+        } catch (SQLException e) {
+            MySQLConnUtils.printSQLException(e);
+        }
+        return drugsList;
     }
 
     @Override
     public Drug findById(long id) throws SQLException {
         Drug currentDrug = null;
         Connection connection = MySQLConnUtils.getSqlConnection();
-        CallableStatement statement = connection.prepareCall("{CALL pharmacy_online.sp_find_drug_by_id(?)}");
+        CallableStatement statement = connection.prepareCall(GET_DRUG_BY_ID);
         statement.setLong(1, id);
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {
@@ -118,7 +133,6 @@ public class MedicineService implements IMedicineService {
         statement.setDate(8, java.sql.Date.valueOf(drug.getExpirationDate()));
         statement.setString(9,drug.getNote());
         statement.executeQuery();
-
         return statement.getBoolean(10);
     }
 
@@ -130,5 +144,19 @@ public class MedicineService implements IMedicineService {
     @Override
     public boolean remove(long id) throws SQLException {
         return false;
+    }
+
+    @Override
+    public boolean isDrugExisted(Drug newDrug) throws SQLException {
+        Connection connection = MySQLConnUtils.getSqlConnection();
+        CallableStatement statement = connection.prepareCall(IS_DRUG_EXISTED);
+        statement.setString(1, newDrug.getDrugName());
+        statement.setDouble(2, newDrug.getDrugContent());
+        statement.setBigDecimal(3,newDrug.getPricePerPill());
+        statement.setInt(4,newDrug.getDosageForm());
+        statement.setDate(5,java.sql.Date.valueOf(newDrug.getProductionDate()));
+        statement.setDate(6,java.sql.Date.valueOf(newDrug.getExpirationDate()));
+        statement.execute();
+        return statement.getBoolean(7);
     }
 }

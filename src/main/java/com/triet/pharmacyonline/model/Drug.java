@@ -7,7 +7,10 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 
 public class Drug {
@@ -24,7 +27,12 @@ public class Drug {
     private String note;
     boolean deleted;
 
-    public Drug() {
+    public Drug() throws ParseException {
+        drugName = "";
+        usage = "";
+        productionDate = new SimpleDateFormat("MM/dd/yyyy").parse("00/00/0000").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        expirationDate = new SimpleDateFormat("MM/dd/yyyy").parse("00/00/0000").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        note = "";
     }
 
     public Drug(long id, String drugName, double drugContent, int quantity, int dosageForm, String usage, BigDecimal pricePerPill, LocalDate productionDate, LocalDate expirationDate, String note) {

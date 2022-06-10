@@ -22,7 +22,8 @@ public class MedicineService implements IMedicineService {
     private static final String NEW_DRUG_ADD_SP = "CALL pharmacy_online.sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String GET_DRUG_BY_ID = "CALL pharmacy_online.sp_find_drug_by_id(?)";
     private static final String IS_DRUG_EXISTED = "CALL pharmacy_online.sp_is_drug_existed(?, ?, ?, ?, ?, ?, ?)";
-
+    private static final String IS_DRUG_ID_EXISTED = "CALL pharmacy_online.sp_is_drug_id_existed(?, ?)";
+    private static final String REMOVE_DRUG_EXISTED = "CALL pharmacy_online.sp_remove_drug(?, ?)";
 
     public List<DrugDTO> findAllDTO() {
         List<DrugDTO> drugsDTOList = new ArrayList<>();
@@ -143,11 +144,15 @@ public class MedicineService implements IMedicineService {
 
     @Override
     public boolean remove(long id) throws SQLException {
-        return false;
+        Connection connection = MySQLConnUtils.getSqlConnection();
+        CallableStatement statement = connection.prepareCall(REMOVE_DRUG_EXISTED);
+        statement.setLong(1, id);
+        statement.execute();
+        return statement.getBoolean(2);
     }
 
     @Override
-    public boolean isDrugExisted(Drug newDrug) throws SQLException {
+    public boolean isExisted(Drug newDrug) throws SQLException {
         Connection connection = MySQLConnUtils.getSqlConnection();
         CallableStatement statement = connection.prepareCall(IS_DRUG_EXISTED);
         statement.setString(1, newDrug.getDrugName());
@@ -158,5 +163,14 @@ public class MedicineService implements IMedicineService {
         statement.setDate(6,java.sql.Date.valueOf(newDrug.getExpirationDate()));
         statement.execute();
         return statement.getBoolean(7);
+    }
+
+    @Override
+    public boolean isIdExisted(long id) throws SQLException {
+        Connection connection = MySQLConnUtils.getSqlConnection();
+        CallableStatement statement = connection.prepareCall(IS_DRUG_ID_EXISTED);
+        statement.setLong(1, id);
+        statement.execute();
+        return statement.getBoolean(2);
     }
 }

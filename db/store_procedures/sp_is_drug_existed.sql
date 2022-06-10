@@ -15,9 +15,10 @@ BEGIN
         WHERE  dr.drugName = drugName 
 			AND dr.drugContent = drugContent
             AND dr.pricePerPill = price
-            AND dr.dosageForm = dosageDorm
+            AND dr.dosageForm = dosageForm
 			AND dr.productionDate = productionDate
 			AND dr.expirationDate = expirationDate
+            AND dr.deleted = 0
         ) > 0
 	THEN 
 		SET result = TRUE;

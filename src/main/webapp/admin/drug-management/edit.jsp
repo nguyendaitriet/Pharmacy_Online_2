@@ -4,14 +4,14 @@
 <html lang="en">
 
 <head>
-    <title>Add New Drug</title>
+    <title>Edit Drug</title>
     <%@ include file="/layout/header-p1.jsp" %>
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
     <!-- Notification css (Toast) -->
     <link href="/assets/libs/toastr/css/iziToast.min.css" rel="stylesheet" type="text/css">
-<%--    <link href="/assets/libs/toastr/toastr.min.css" rel="stylesheet" type="text/css">--%>
+    <%--    <link href="/assets/libs/toastr/toastr.min.css" rel="stylesheet" type="text/css">--%>
 
     <!-- Plugins css -->
     <link href="/assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
@@ -51,7 +51,6 @@
 
         </div>
         <!-- Sidebar -left -->
-
     </div>
     <!-- Left Sidebar End -->
 
@@ -68,23 +67,22 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class= "mb-4">DRUG INFORMATION</h2>
+                                <h2 class= "mb-4 text-primary">UPDATE DRUG INFORMATION</h2>
 
                                 <form class="parsley-examples" method="post" autocomplete="off">
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="drugName">Drug Name<span class="text-danger">*</span></label>
                                             <input type="text" name="drugName" parsley-trigger="change" required="" placeholder="Drug Name" class="form-control" id="drugName"
-                                                   value="${newDrug.getDrugName()}">
-                                            <span class="font-15 text-muted">Example: Paracetamol</span>
+                                                   value="${drug.getDrugName()}">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="drugContent">Drug Content (mg)<span class="text-danger">*</span></label>
-                                            <input type="number" name="drugContent" parsley-trigger="change" required="" value="${newDrug.getDrugContent()}" class="form-control" id="drugContent">
+                                            <input type="number" name="drugContent" parsley-trigger="change" required="" value="${drug.getDrugContent()}" class="form-control" id="drugContent">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="quantity">Quantity<span class="text-danger">*</span></label>
-                                            <input id="quantity" name="quantity" type="number" value="${newDrug.getQuantity()}" required="" class="form-control">
+                                            <input id="quantity" name="quantity" type="number" value="${drug.getQuantity()}" required="" class="form-control">
                                         </div>
                                     </div>
 
@@ -92,21 +90,20 @@
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="price">Price (VND)<span class="text-danger">*</span></label>
                                             <input type="number" name="price" placeholder="" required=""
-                                                   value="${newDrug.getPricePerPill()}" class="form-control" id="price">
+                                                   value="${drug.getPricePerPill()}" class="form-control" id="price">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="dosageForm">Dosage Form</label>
                                             <select class="form-control" data-toggle="select2" id="dosageForm" name="dosageForm">
-                                                <option disabled ${newDrug == null ? "selected" : ""}>- Choose drug dosage form -</option>
+                                                <option disabled ${drug == null ? "selected" : ""}>- Choose drug dosage form -</option>
                                                 <c:forEach var="dosageForm" items="${dosageFormList}">
-                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == newDrug.getDosageForm() ? "selected" : ""}>${dosageForm.getName()}</option>
+                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == drug.getDosageForm() ? "selected" : ""}>${dosageForm.getName()}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="usage">Usage</label>
-                                            <input type="text" name="usage" placeholder="Usage" class="form-control" id="usage" value="${newDrug.getUsage()}">
-                                            <span class="font-15 text-muted">Example: Headache, Stomach ache</span>
+                                            <input type="text" name="usage" placeholder="Usage" class="form-control" id="usage" value="${drug.getUsage()}">
                                         </div>
                                     </div>
 
@@ -140,13 +137,13 @@
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="note">Note</label>
-                                            <input type="text" name="note" placeholder="Note" class="form-control" id="note" value="${newDrug.getNote()}">
+                                            <input type="text" name="note" placeholder="Note" class="form-control" id="note" value="${drug.getNote()}">
                                         </div>
                                     </div>
 
                                     <div class="form-group text-right mb-0">
-                                        <button class="btn btn-primary waves-effect waves-light mr-1" type="submit">
-                                            Add
+                                        <button class="btn btn-danger waves-effect waves-light mr-1" type="submit">
+                                            Remove
                                         </button>
                                         <a href="/drugs" class="btn btn-secondary waves-effect waves-light">
                                             <span>Cancel</span>
@@ -162,30 +159,6 @@
 
         <%@ include file="/layout/footer.jsp" %>
 
-        <c:if test="${errors != null}">
-            <c:forEach var="error" items="${errors}">
-                <script>
-                    iziToast.error({
-                        title: 'Error',
-                        message: '${error.getMessage()}',
-                        timeout: 7000,
-                        progressBar: false,
-                        position: "topRight"
-                    });
-                </script>
-            </c:forEach>
-        </c:if>
-        <c:if test="${anotherError != null}">
-            <script>
-                iziToast.error({
-                    title: 'Error',
-                    message: '${anotherError}',
-                    timeout: 7000,
-                    progressBar: false,
-                    position: "topRight"
-                });
-            </script>
-        </c:if>
         <c:if test="${successfully != null}">
             <script>
                 iziToast.success({
@@ -205,25 +178,19 @@
                 });
             </script>
         </c:if>
-        <c:if test="${isDrugExist != null}">
-            <script>
-                iziToast.warning({
-                    title: 'Sorry',
-                    message: '${isDrugExist}',
-                    timeout: 7000,
-                    progressBar: false,
-                    position: "topRight"
-                });
-            </script>
-        </c:if>
-    </div>
 
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
+    </div>
 
 </div>
 <!-- END wrapper -->
+
+
+<!-- Right Sidebar -->
+<%--<%@ include file="/layout/sidebar-right.jsp" %>--%>
+<!-- /Right-bar -->
+
+<!-- Right bar overlay-->
+<%--<div class="rightbar-overlay"></div>--%>
 
 <!-- Vendor js -->
 <script src="/assets/js/vendor.min.js"></script>

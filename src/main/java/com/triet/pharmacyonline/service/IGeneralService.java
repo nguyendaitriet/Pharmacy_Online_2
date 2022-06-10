@@ -13,4 +13,8 @@ public interface IGeneralService<T> {
     boolean update(T t) throws SQLException;
 
     boolean remove(long id) throws SQLException;
+
+    boolean isIdExisted(long id) throws SQLException;
+
+    boolean isExisted(T t) throws SQLException;
 }

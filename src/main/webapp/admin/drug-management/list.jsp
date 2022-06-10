@@ -4,13 +4,18 @@
 <html lang="en">
 
 <head>
-    <title>Drug management</title>
+    <title>Drug List</title>
     <%@ include file="/layout/header-p1.jsp" %>
+    <!-- Notification css (Toast) -->
+    <link href="/assets/libs/toastr/css/iziToast.min.css" rel="stylesheet" type="text/css">
+
     <link href="/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <%@ include file="/layout/header-p2.jsp" %>
+    <script src="/assets/libs/toastr/js/iziToast.min.js"></script>
+
 </head>
 
 <body>
@@ -94,10 +99,10 @@
                                                 <td>${drug.getPricePerPill()}</td>
                                                 <td>${drug.getExpirationDate()}</td>
                                                 <td>
-                                                    <a title="Edit" href="/customers?action=edit&id=${customer.getId()}" class="btn btn-outline-secondary">
+                                                    <a title="Edit" href="/drugs?action=edit&id=${drug.getId()}" class="btn btn-outline-secondary">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </a>
-                                                    <a title="Remove" href="/customers?action=edit&id=${customer.getId()}" class="btn btn-outline-danger">
+                                                    <a title="Remove" href="/drugs?action=remove&id=${drug.getId()}" class="btn btn-outline-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 </td>
@@ -121,20 +126,31 @@
 
     </div>
 
+    <c:if test="${invalidID != null}">
+        <script>
+            iziToast.error({
+                title: 'Error',
+                message: "${invalidID}",
+                timeout: 7000,
+                progressBar: false,
+                position: "topRight"
+            });
+        </script>
+    </c:if>
+    <c:if test="${successfully != null}">
+        <script>
+            iziToast.success({
+                title: 'Done',
+                message: '${successfully}'
+            });
+        </script>
+    </c:if>
     <!-- ============================================================== -->
     <!-- End Page content -->
     <!-- ============================================================== -->
 
 </div>
 <!-- END wrapper -->
-
-
-<!-- Right Sidebar -->
-<%@ include file="/layout/sidebar-right.jsp" %>
-<!-- /Right-bar -->
-
-<!-- Right bar overlay-->
-<div class="rightbar-overlay"></div>
 
 <!-- Vendor js -->
 <script src="/assets/js/vendor.min.js"></script>

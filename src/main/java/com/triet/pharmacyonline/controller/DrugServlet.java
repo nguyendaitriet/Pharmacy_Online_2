@@ -6,6 +6,7 @@ import com.triet.pharmacyonline.exceptions.ProductionDateException;
 import com.triet.pharmacyonline.model.DosageForm;
 import com.triet.pharmacyonline.model.Drug;
 import com.triet.pharmacyonline.service.MedicineService;
+import com.triet.pharmacyonline.utils.ParsingValidationUtils;
 import com.triet.pharmacyonline.utils.ValidationUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -42,10 +43,10 @@ public class DrugServlet extends HttpServlet {
                     showAddForm(request, response);
                     break;
                 case "edit":
-//                showEditForm(request,response);
+                showEditForm(request,response);
                     break;
                 case "remove":
-//                showRemoveForm(request,response);
+                showRemoveForm(request,response);
                     break;
                 default:
                     showDrugsList(request, response);
@@ -71,7 +72,7 @@ public class DrugServlet extends HttpServlet {
 //                    editDrug(request, response);
                     break;
                 case "remove":
-//                    removeDrug(request,response);
+                    removeDrug(request,response);
                     break;
             }
         } catch (ParseException | SQLException ex) {
@@ -80,20 +81,37 @@ public class DrugServlet extends HttpServlet {
 
     }
 
+    private void showDrugsList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<DrugDTO> drugDTOList = medicineService.findAllDTO();
+        request.setAttribute("drugDTOList", drugDTOList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<DosageForm> dosageFormList = medicineService.getDosageForms();
+        request.setAttribute("dosageFormList", dosageFormList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
+        dispatcher.forward(request, response);
+    }
+
+
+
     private void addDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException {
         String anotherError;
-        Drug newDrug = new Drug();
+        Drug inputDrug = new Drug();
         try {
-            newDrug = getNewDrug(request, newDrug);
+            inputDrug = getNewDrug(request, inputDrug);
 
             ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
             Validator validator = validatorFactory.getValidator();
-            Set<ConstraintViolation<Drug>> constraintViolations = validator.validate(newDrug);
+            Set<ConstraintViolation<Drug>> constraintViolations = validator.validate(inputDrug);
 
             if (constraintViolations.isEmpty()) {
-                if (!medicineService.isDrugExisted(newDrug)) {
-                    if (medicineService.save(newDrug)) {
+                if (!medicineService.isExisted(inputDrug)) {
+                    if (medicineService.save(inputDrug)) {
                         request.setAttribute("successfully", "Successful operation!");
+                        inputDrug = new Drug();
                     } else {
                         request.setAttribute("failed", "Failed operation. Please contact to the manager!");
                     }
@@ -102,8 +120,8 @@ public class DrugServlet extends HttpServlet {
                 }
             }
 
-            request.setAttribute("productionDate", newDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-            request.setAttribute("expirationDate", newDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            request.setAttribute("productionDate", inputDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            request.setAttribute("expirationDate", inputDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             request.setAttribute("errors", constraintViolations);
         } catch (ParseException ex) {
             anotherError = "Invalid Date. Please enter with format mm/dd/yyyy";
@@ -112,12 +130,12 @@ public class DrugServlet extends HttpServlet {
             anotherError = "Invalid Number";
             request.setAttribute("anotherError", anotherError);
         } catch (ProductionDateException | ExpirationDateException p) {
-            request.setAttribute("productionDate", newDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-            request.setAttribute("expirationDate", newDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            request.setAttribute("productionDate", inputDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            request.setAttribute("expirationDate", inputDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             anotherError = p.getMessage();
             request.setAttribute("anotherError", anotherError);
         } finally {
-            request.setAttribute("newDrug", newDrug);
+            request.setAttribute("newDrug", inputDrug);
 
             List<DosageForm> dosageFormList = medicineService.getDosageForms();
             request.setAttribute("dosageFormList", dosageFormList);
@@ -153,25 +171,50 @@ public class DrugServlet extends HttpServlet {
         return drug;
     }
 
-    private void showDrugsList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<DrugDTO> drugDTOList = medicineService.findAllDTO();
-        request.setAttribute("drugDTOList", drugDTOList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/list.jsp");
-        dispatcher.forward(request, response);
-    }
-
-    private void showAddForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<DosageForm> dosageFormList = medicineService.getDosageForms();
-        request.setAttribute("dosageFormList", dosageFormList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
-        dispatcher.forward(request, response);
-    }
-
     private void showRemoveForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        long id = Long.parseLong(request.getParameter("id"));
-        Drug drug = medicineService.findById(id);
-        request.setAttribute("drug", drug);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/list.jsp");
-        dispatcher.forward(request, response);
+        String path = "/admin/drug-management/remove.jsp";
+        dispatchInvalidId(path, request,response);
+    }
+
+    private void dispatchInvalidId (String path, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String id = request.getParameter("id");
+        if (ParsingValidationUtils.isNumberParsing(id)) {
+            long validId = Long.parseLong(id);
+            if (medicineService.isIdExisted(validId)) {
+                Drug drug = medicineService.findById(validId);
+                request.setAttribute("drug", drug);
+                request.setAttribute("productionDate", drug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                request.setAttribute("expirationDate", drug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                List<DosageForm> dosageFormList = medicineService.getDosageForms();
+                request.setAttribute("dosageFormList", dosageFormList);
+                RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+                dispatcher.forward(request, response);
+                return;
+            }
+        }
+        request.setAttribute("invalidID","Drug ID doesn't exist. Try again!");
+        showDrugsList(request, response);
+    }
+
+    private void removeDrug(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String id = request.getParameter("id");
+        if (ParsingValidationUtils.isNumberParsing(id)) {
+            long validId = Long.parseLong(id);
+            if (medicineService.isIdExisted(validId)) {
+                if (medicineService.remove(validId)) {
+                    request.setAttribute("successfully", "Successful operation!");
+                } else {
+                    request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                }
+                showDrugsList(request,response);
+                return;
+            }
+        }
+        showRemoveForm(request,response);
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, SQLException, IOException {
+        String path = "/admin/drug-management/edit.jsp";
+        dispatchInvalidId(path, request,response);
     }
 }

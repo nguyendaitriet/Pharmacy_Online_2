@@ -168,23 +168,25 @@
                     iziToast.error({
                         title: 'Error',
                         message: '${error.getMessage()}',
-                        timeout: 7000,
+                        timeout: 10000,
                         progressBar: false,
                         position: "topRight"
                     });
                 </script>
             </c:forEach>
         </c:if>
-        <c:if test="${anotherError != null}">
-            <script>
-                iziToast.error({
-                    title: 'Error',
-                    message: '${anotherError}',
-                    timeout: 7000,
-                    progressBar: false,
-                    position: "topRight"
-                });
-            </script>
+        <c:if test="${invalidInput != null}">
+            <c:forEach var="error" items="${invalidInput}">
+                <script>
+                    iziToast.error({
+                        title: 'Error',
+                        message: '${error}',
+                        timeout: 10000,
+                        progressBar: false,
+                        position: "topRight"
+                    });
+                </script>
+            </c:forEach>
         </c:if>
         <c:if test="${successfully != null}">
             <script>
@@ -199,18 +201,18 @@
                 iziToast.error({
                     title: 'Hey',
                     message: '${failed}',
-                    timeout: 7000,
+                    timeout: 10000,
                     progressBar: false,
                     position: "topRight"
                 });
             </script>
         </c:if>
-        <c:if test="${isDrugExist != null}">
+        <c:if test="${anotherError != null}">
             <script>
                 iziToast.warning({
                     title: 'Sorry',
                     message: '${isDrugExist}',
-                    timeout: 7000,
+                    timeout: 10000,
                     progressBar: false,
                     position: "topRight"
                 });

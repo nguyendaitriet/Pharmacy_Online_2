@@ -28,7 +28,7 @@ import java.util.*;
 
 @WebServlet(name = "DrugServlet", value = "/drugs")
 public class DrugServlet extends HttpServlet {
-
+    //    private static List<String> parsingErrors = new ArrayList<>();
     MedicineService medicineService = new MedicineService();
 
     @Override
@@ -43,10 +43,10 @@ public class DrugServlet extends HttpServlet {
                     showAddForm(request, response);
                     break;
                 case "edit":
-                showEditForm(request,response);
+                    showEditForm(request, response);
                     break;
                 case "remove":
-                showRemoveForm(request,response);
+                    showRemoveForm(request, response);
                     break;
                 default:
                     showDrugsList(request, response);
@@ -72,7 +72,7 @@ public class DrugServlet extends HttpServlet {
                     editDrug(request, response);
                     break;
                 case "remove":
-                    removeDrug(request,response);
+                    removeDrug(request, response);
                     break;
             }
         } catch (ParseException | SQLException ex) {
@@ -96,114 +96,128 @@ public class DrugServlet extends HttpServlet {
     }
 
 
-
     private void addDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException {
         String path = "/admin/drug-management/add.jsp";
-        addOrUpdateDrug(request,response,path,1);
+        addOrUpdateDrug(request, response, path, 1);
     }
 
     private void addOrUpdateDrug(HttpServletRequest request, HttpServletResponse response, String path, int action) throws ServletException, IOException, ParseException, SQLException {
-        String anotherError;
         Drug inputDrug = new Drug();
-        try {
-            inputDrug = getNewDrug(request, inputDrug);
+        ArrayList<String> parsingErrors = getNewDrug(request, inputDrug);
 
-            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-            Validator validator = validatorFactory.getValidator();
-            Set<ConstraintViolation<Drug>> constraintViolations = validator.validate(inputDrug);
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<Drug>> constraintViolations = validator.validate(inputDrug);
 
-            if (constraintViolations.isEmpty()) {
-                if (!medicineService.isExisted(inputDrug)) {
-                    switch (action) {
-                        //add new drug
-                        case 1: {
-                            if (medicineService.save(inputDrug)) {
-                                request.setAttribute("successfully", "Successful operation!");
-                                inputDrug = new Drug();
-                            } else {
-                                request.setAttribute("failed", "Failed operation. Please contact to the manager!");
-                            }
-                            break;
+        if (constraintViolations.isEmpty() && parsingErrors.isEmpty()) {
+            switch (action) {
+                //add new drug
+                case 1: {
+                    if (!medicineService.isExisted(inputDrug)) {
+                        if (medicineService.save(inputDrug)) {
+                            request.setAttribute("successfully", "Successful operation!");
+                            inputDrug = new Drug();
+                        } else {
+                            request.setAttribute("failed", "Failed operation. Please contact to the manager!");
                         }
-                        //update drug
-                        case 2:{
-                            if (medicineService.update(inputDrug.getId(),inputDrug)) {
-                                request.setAttribute("successfully", "Successful operation!");
-                            } else {
-                                request.setAttribute("failed", "Failed operation. Please contact to the manager!");
-                            }
-                            break;
-                        }
+                    } else {
+                        request.setAttribute("anotherError", "Drug existed! Please enter another Drug Name or Drug Content.");
                     }
-
-                } else {
-                    request.setAttribute("isDrugExist", "Drug existed! Please enter another Drug Name or Drug Content.");
+                    break;
+                }
+                //update drug
+                case 2: {
+                    if (medicineService.update(inputDrug.getId(), inputDrug)) {
+                        request.setAttribute("successfully", "Successful operation!");
+                    } else {
+                        request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                    }
+                    break;
                 }
             }
 
-            request.setAttribute("productionDate", inputDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-            request.setAttribute("expirationDate", inputDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-            request.setAttribute("errors", constraintViolations);
-        } catch (ParseException ex) {
-            anotherError = "Invalid Date. Please enter with format mm/dd/yyyy";
-            request.setAttribute("anotherError", anotherError);
-        } catch (NumberFormatException ex) {
-            anotherError = "Invalid Number";
-            request.setAttribute("anotherError", anotherError);
-        } catch (ProductionDateException | ExpirationDateException p) {
-            request.setAttribute("productionDate", inputDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-            request.setAttribute("expirationDate", inputDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-            anotherError = p.getMessage();
-            request.setAttribute("anotherError", anotherError);
-        } finally {
-            request.setAttribute("newDrug", inputDrug);
-
-            List<DosageForm> dosageFormList = medicineService.getDosageForms();
-            request.setAttribute("dosageFormList", dosageFormList);
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-            dispatcher.forward(request, response);
         }
+
+        request.setAttribute("productionDate", inputDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        request.setAttribute("expirationDate", inputDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        request.setAttribute("errors", constraintViolations);
+        request.setAttribute("invalidInput", parsingErrors);
+        request.setAttribute("newDrug", inputDrug);
+
+        List<DosageForm> dosageFormList = medicineService.getDosageForms();
+        request.setAttribute("dosageFormList", dosageFormList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+        dispatcher.forward(request, response);
+
     }
 
-    public Drug getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException {
+
+    public ArrayList<String> getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException {
+        ArrayList<String> parsingErrors = new ArrayList<>();
         drug.setDrugName(request.getParameter("drugName").toLowerCase());
-        drug.setDrugContent(Double.parseDouble(request.getParameter("drugContent")));
-        drug.setQuantity(Integer.parseInt(request.getParameter("quantity")));
-        long price = Long.parseLong(request.getParameter("price").replace(",", ""));
-        drug.setPricePerPill(BigDecimal.valueOf(price));
+
+        String drugContent = request.getParameter("drugContent");
+        if (ParsingValidationUtils.isDecimalParsing(drugContent)) {
+            drug.setDrugContent(Double.parseDouble(drugContent));
+        } else parsingErrors.add("Invalid value of Drug Content!");
+
+        String quantity = request.getParameter("quantity");
+        if (ParsingValidationUtils.isIntParsing(quantity)) {
+            drug.setQuantity(Integer.parseInt(quantity));
+        } else parsingErrors.add("Invalid value of Quantity!");
+
+        String price = request.getParameter("price");
+        if (ParsingValidationUtils.isLongParsing(price)) {
+            drug.setPricePerPill(BigDecimal.valueOf(Long.parseLong(price)));
+        } else parsingErrors.add("Invalid value of Price!");
+
         drug.setUsage(request.getParameter("usage").trim());
         drug.setNote(request.getParameter("note").trim());
-        drug.setDosageForm(Integer.parseInt(request.getParameter("dosageForm")));
 
-        String productionDateGot = request.getParameter("productionDate");
-        String expirationDateGot = request.getParameter("expirationDate");
-        LocalDate productionDate = new SimpleDateFormat("MM/dd/yyyy").parse(productionDateGot).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate expirationDate = new SimpleDateFormat("MM/dd/yyyy").parse(expirationDateGot).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        drug.setProductionDate(productionDate);
-        drug.setExpirationDate(expirationDate);
-        if (!ValidationUtils.checkProductionDate(productionDate)) {
-            throw new ProductionDateException();
-        }
-        if (!ValidationUtils.checkExpirationDate(expirationDate)) {
-            throw new ExpirationDateException();
-        }
+        String dosageForm = request.getParameter("dosageForm");
+        if (ParsingValidationUtils.isIntParsing(dosageForm)) {
+            drug.setDosageForm(Integer.parseInt(dosageForm));
+        } else parsingErrors.add("Invalid value of Dosage Form!");
 
-        return drug;
+        String productionDate = request.getParameter("productionDate");
+        if (ParsingValidationUtils.isDateParsing(productionDate)) {
+            drug.setProductionDate(new SimpleDateFormat("MM/dd/yyyy").parse(productionDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            if (ValidationUtils.checkProductionDate(drug.getProductionDate())) {
+                drug.setProductionDate(drug.getProductionDate());
+            } else
+                parsingErrors.add("Production Date must NOT be less than " + ValidationUtils.validProductionDate + ".");
+        } else parsingErrors.add("Invalid value of Production Date!");
+
+        String expirationDate = request.getParameter("expirationDate");
+        if (ParsingValidationUtils.isDateParsing(expirationDate)) {
+            drug.setExpirationDate(new SimpleDateFormat("MM/dd/yyyy").parse(expirationDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            if (ValidationUtils.checkExpirationDate(drug.getExpirationDate())) {
+                drug.setExpirationDate(drug.getExpirationDate());
+            } else
+                parsingErrors.add("Expiration Date must NOT be greater than " + ValidationUtils.validExpirationDate + ".");
+        } else parsingErrors.add("Invalid value of Expiration Date!");
+//        if (!ValidationUtils.checkProductionDate(drug.getProductionDate())) {
+//            throw new ProductionDateException();
+//        }
+//        if (!ValidationUtils.checkExpirationDate(drug.)) {
+//            throw new ExpirationDateException();
+//        }
+        return parsingErrors;
     }
 
     private void showRemoveForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String path = "/admin/drug-management/remove.jsp";
-        dispatchInvalidId(path, request,response);
+        dispatchInvalidId(path, request, response);
     }
 
-    private void dispatchInvalidId (String path, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    private void dispatchInvalidId(String path, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String id = request.getParameter("id");
-        if (ParsingValidationUtils.isNumberParsing(id)) {
+        if (ParsingValidationUtils.isLongParsing(id)) {
             long validId = Long.parseLong(id);
             if (medicineService.isIdExisted(validId)) {
                 Drug drug = medicineService.findById(validId);
-                request.setAttribute("drug", drug);
+                request.setAttribute("newDrug", drug);
                 request.setAttribute("productionDate", drug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
                 request.setAttribute("expirationDate", drug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
                 List<DosageForm> dosageFormList = medicineService.getDosageForms();
@@ -213,13 +227,13 @@ public class DrugServlet extends HttpServlet {
                 return;
             }
         }
-        request.setAttribute("invalidID","Drug ID doesn't exist. Try again!");
+        request.setAttribute("invalidID", "Drug ID doesn't exist. Try again!");
         showDrugsList(request, response);
     }
 
     private void removeDrug(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String id = request.getParameter("id");
-        if (ParsingValidationUtils.isNumberParsing(id)) {
+        if (ParsingValidationUtils.isLongParsing(id)) {
             long validId = Long.parseLong(id);
             if (medicineService.isIdExisted(validId)) {
                 if (medicineService.remove(validId)) {
@@ -227,21 +241,21 @@ public class DrugServlet extends HttpServlet {
                 } else {
                     request.setAttribute("failed", "Failed operation. Please contact to the manager!");
                 }
-                showDrugsList(request,response);
+                showDrugsList(request, response);
                 return;
             }
         }
-        showRemoveForm(request,response);
+        showRemoveForm(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, SQLException, IOException {
         String path = "/admin/drug-management/edit.jsp";
-        dispatchInvalidId(path, request,response);
+        dispatchInvalidId(path, request, response);
     }
 
     private void editDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, SQLException, IOException, ParseException {
-        String path = "/admin/drug-management/add.jsp";
-        addOrUpdateDrug(request,response,path,2);
+        String path = "/admin/drug-management/edit.jsp";
+        addOrUpdateDrug(request, response, path, 2);
     }
 
 }

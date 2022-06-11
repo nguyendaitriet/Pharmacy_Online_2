@@ -74,15 +74,15 @@
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="drugName">Drug Name<span class="text-danger">*</span></label>
                                             <input type="text" name="drugName" parsley-trigger="change" required="" placeholder="Drug Name" class="form-control" id="drugName"
-                                                   value="${drug.getDrugName()}">
+                                                   value="${newDrug.getDrugName()}">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="drugContent">Drug Content (mg)<span class="text-danger">*</span></label>
-                                            <input type="number" name="drugContent" parsley-trigger="change" required="" value="${drug.getDrugContent()}" class="form-control" id="drugContent">
+                                            <input type="number" name="drugContent" parsley-trigger="change" required="" value="${newDrug.getDrugContent()}" class="form-control" id="drugContent">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="quantity">Quantity<span class="text-danger">*</span></label>
-                                            <input id="quantity" name="quantity" type="number" value="${drug.getQuantity()}" required="" class="form-control">
+                                            <input id="quantity" name="quantity" type="number" value="${newDrug.getQuantity()}" required="" class="form-control">
                                         </div>
                                     </div>
 
@@ -90,20 +90,20 @@
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="price">Price (VND)<span class="text-danger">*</span></label>
                                             <input type="number" name="price" placeholder="" required=""
-                                                   value="${drug.getPricePerPill()}" class="form-control" id="price">
+                                                   value="${newDrug.getPricePerPill()}" class="form-control" id="price">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="dosageForm">Dosage Form</label>
                                             <select class="form-control" data-toggle="select2" id="dosageForm" name="dosageForm">
-                                                <option disabled ${drug == null ? "selected" : ""}>- Choose drug dosage form -</option>
+                                                <option disabled ${newDrug == null ? "selected" : ""}>- Choose drug dosage form -</option>
                                                 <c:forEach var="dosageForm" items="${dosageFormList}">
-                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == drug.getDosageForm() ? "selected" : ""}>${dosageForm.getName()}</option>
+                                                    <option value="${dosageForm.getId()}" ${dosageForm.getId() == newDrug.getDosageForm() ? "selected" : ""}>${dosageForm.getName()}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="usage">Usage</label>
-                                            <input type="text" name="usage" placeholder="Usage" class="form-control" id="usage" value="${drug.getUsage()}">
+                                            <input type="text" name="usage" placeholder="Usage" class="form-control" id="usage" value="${newDrug.getUsage()}">
                                         </div>
                                     </div>
 
@@ -137,7 +137,7 @@
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="note">Note</label>
-                                            <input type="text" name="note" placeholder="Note" class="form-control" id="note" value="${drug.getNote()}">
+                                            <input type="text" name="note" placeholder="Note" class="form-control" id="note" value="${newDrug.getNote()}">
                                         </div>
                                     </div>
 
@@ -178,7 +178,32 @@
                 });
             </script>
         </c:if>
-
+        <c:if test="${invalidInput != null}">
+            <c:forEach var="error" items="${invalidInput}">
+                <script>
+                    iziToast.error({
+                        title: 'Error',
+                        message: '${error}',
+                        timeout: 10000,
+                        progressBar: false,
+                        position: "topRight"
+                    });
+                </script>
+            </c:forEach>
+        </c:if>
+        <c:if test="${errors != null}">
+            <c:forEach var="error" items="${errors}">
+                <script>
+                    iziToast.error({
+                        title: 'Error',
+                        message: '${error.getMessage()}',
+                        timeout: 10000,
+                        progressBar: false,
+                        position: "topRight"
+                    });
+                </script>
+            </c:forEach>
+        </c:if>
     </div>
 
 </div>

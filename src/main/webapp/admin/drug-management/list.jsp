@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +98,9 @@
                                                 <td>${drug.getDrugContent()}</td>
                                                 <td>${drug.getQuantity()}</td>
                                                 <td>${drug.getPricePerPill()}</td>
-                                                <td>${drug.getExpirationDate()}</td>
+                                                <td>
+                                                    <fmt:formatDate pattern = "dd/MM/yyyy" value = "${drug.getExpirationDate()}" />
+                                                </td>
                                                 <td>
                                                     <a title="Edit" href="/drugs?action=edit&id=${drug.getId()}" class="btn btn-outline-secondary">
                                                         <i class="fas fa-pencil-alt"></i>
@@ -114,7 +117,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- end container-fluid -->
         </div>

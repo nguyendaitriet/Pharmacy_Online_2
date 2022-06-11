@@ -96,7 +96,7 @@ public class Drug {
 
     @NotEmpty(message = "Drug name must NOT be empty.")
     @Pattern(regexp = ValidationUtils.DRUG_NAME_REGEX,
-            message = "Drug Name must NOT contain DIGIT, SPECIAL CHARACTER or redundant WHITESPACE. And CAPITALIZE first letter of name.")
+            message = "Drug Name must NOT contain DIGIT, SPECIAL CHARACTER or redundant WHITESPACE.")
     public String getDrugName() {
         return drugName;
     }

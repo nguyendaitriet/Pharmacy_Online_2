@@ -19,11 +19,12 @@ public class MedicineService implements IMedicineService {
                                                         "ds.id," +
                                                         "ds.name " +
                                                     "FROM dosage_forms AS ds;";
-    private static final String NEW_DRUG_ADD_SP = "CALL pharmacy_online.sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String NEW_DRUG_ADD_SP = "CALL pharmacy_online.sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String GET_DRUG_BY_ID = "CALL pharmacy_online.sp_find_drug_by_id(?)";
     private static final String IS_DRUG_EXISTED = "CALL pharmacy_online.sp_is_drug_existed(?, ?, ?, ?, ?, ?, ?)";
     private static final String IS_DRUG_ID_EXISTED = "CALL pharmacy_online.sp_is_drug_id_existed(?, ?)";
     private static final String REMOVE_DRUG_EXISTED = "CALL pharmacy_online.sp_remove_drug(?, ?)";
+    private static final String UPDATE_DRUG_EXISTED = "CALL pharmacy_online.sp_update_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public List<DrugDTO> findAllDTO() {
         List<DrugDTO> drugsDTOList = new ArrayList<>();
@@ -124,6 +125,17 @@ public class MedicineService implements IMedicineService {
     public boolean save(Drug drug) throws SQLException {
         Connection connection = MySQLConnUtils.getSqlConnection();
         CallableStatement statement = connection.prepareCall(NEW_DRUG_ADD_SP);
+        return setParameters(statement, drug);
+    }
+
+    @Override
+    public boolean update(long id, Drug drug) throws SQLException {
+        Connection connection = MySQLConnUtils.getSqlConnection();
+        CallableStatement statement = connection.prepareCall(UPDATE_DRUG_EXISTED);
+        return setParameters(statement, drug);
+    }
+
+    private boolean setParameters(CallableStatement statement, Drug drug) throws SQLException {
         statement.setString(1, drug.getDrugName());
         statement.setDouble(2, drug.getDrugContent());
         statement.setInt(3, drug.getQuantity());
@@ -133,13 +145,9 @@ public class MedicineService implements IMedicineService {
         statement.setDate(7, java.sql.Date.valueOf(drug.getProductionDate()));
         statement.setDate(8, java.sql.Date.valueOf(drug.getExpirationDate()));
         statement.setString(9,drug.getNote());
+        statement.setLong(11,drug.getId());
         statement.executeQuery();
         return statement.getBoolean(10);
-    }
-
-    @Override
-    public boolean update(Drug drug) throws SQLException {
-        return false;
     }
 
     @Override

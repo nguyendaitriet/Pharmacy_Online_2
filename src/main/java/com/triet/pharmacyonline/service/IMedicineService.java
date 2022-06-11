@@ -15,7 +15,7 @@ public interface IMedicineService extends IGeneralService<Drug>{
     boolean save(Drug drug) throws SQLException;
 
     @Override
-    boolean update(Drug drug) throws SQLException;
+    boolean update(long id, Drug drug) throws SQLException;
 
     @Override
     boolean remove(long id) throws SQLException;

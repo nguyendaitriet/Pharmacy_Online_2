@@ -67,7 +67,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class= "mb-4 text-primary">UPDATE DRUG INFORMATION</h2>
+                                <h2 class= "mb-4 text-secondary">UPDATE DRUG INFORMATION</h2>
 
                                 <form class="parsley-examples" method="post" autocomplete="off">
                                     <div class="row mt-3">
@@ -142,10 +142,10 @@
                                     </div>
 
                                     <div class="form-group text-right mb-0">
-                                        <button class="btn btn-danger waves-effect waves-light mr-1" type="submit">
-                                            Remove
+                                        <button class="btn btn-secondary waves-effect waves-light mr-1" type="submit">
+                                            Update
                                         </button>
-                                        <a href="/drugs" class="btn btn-secondary waves-effect waves-light">
+                                        <a href="/drugs" class="btn btn-dark waves-effect waves-light">
                                             <span>Cancel</span>
                                         </a>
                                     </div>

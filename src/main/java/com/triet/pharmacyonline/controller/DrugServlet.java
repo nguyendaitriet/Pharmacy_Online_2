@@ -69,7 +69,7 @@ public class DrugServlet extends HttpServlet {
                     addDrug(request, response);
                     break;
                 case "edit":
-//                    editDrug(request, response);
+                    editDrug(request, response);
                     break;
                 case "remove":
                     removeDrug(request,response);
@@ -98,6 +98,11 @@ public class DrugServlet extends HttpServlet {
 
 
     private void addDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException {
+        String path = "/admin/drug-management/add.jsp";
+        addOrUpdateDrug(request,response,path,1);
+    }
+
+    private void addOrUpdateDrug(HttpServletRequest request, HttpServletResponse response, String path, int action) throws ServletException, IOException, ParseException, SQLException {
         String anotherError;
         Drug inputDrug = new Drug();
         try {
@@ -109,12 +114,28 @@ public class DrugServlet extends HttpServlet {
 
             if (constraintViolations.isEmpty()) {
                 if (!medicineService.isExisted(inputDrug)) {
-                    if (medicineService.save(inputDrug)) {
-                        request.setAttribute("successfully", "Successful operation!");
-                        inputDrug = new Drug();
-                    } else {
-                        request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                    switch (action) {
+                        //add new drug
+                        case 1: {
+                            if (medicineService.save(inputDrug)) {
+                                request.setAttribute("successfully", "Successful operation!");
+                                inputDrug = new Drug();
+                            } else {
+                                request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                            }
+                            break;
+                        }
+                        //update drug
+                        case 2:{
+                            if (medicineService.update(inputDrug.getId(),inputDrug)) {
+                                request.setAttribute("successfully", "Successful operation!");
+                            } else {
+                                request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                            }
+                            break;
+                        }
                     }
+
                 } else {
                     request.setAttribute("isDrugExist", "Drug existed! Please enter another Drug Name or Drug Content.");
                 }
@@ -140,19 +161,19 @@ public class DrugServlet extends HttpServlet {
             List<DosageForm> dosageFormList = medicineService.getDosageForms();
             request.setAttribute("dosageFormList", dosageFormList);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
             dispatcher.forward(request, response);
         }
     }
 
     public Drug getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException {
-        drug.setDrugName(request.getParameter("drugName"));
+        drug.setDrugName(request.getParameter("drugName").toLowerCase());
         drug.setDrugContent(Double.parseDouble(request.getParameter("drugContent")));
         drug.setQuantity(Integer.parseInt(request.getParameter("quantity")));
         long price = Long.parseLong(request.getParameter("price").replace(",", ""));
         drug.setPricePerPill(BigDecimal.valueOf(price));
-        drug.setUsage(request.getParameter("usage"));
-        drug.setNote(request.getParameter("note"));
+        drug.setUsage(request.getParameter("usage").trim());
+        drug.setNote(request.getParameter("note").trim());
         drug.setDosageForm(Integer.parseInt(request.getParameter("dosageForm")));
 
         String productionDateGot = request.getParameter("productionDate");
@@ -217,4 +238,10 @@ public class DrugServlet extends HttpServlet {
         String path = "/admin/drug-management/edit.jsp";
         dispatchInvalidId(path, request,response);
     }
+
+    private void editDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, SQLException, IOException, ParseException {
+        String path = "/admin/drug-management/add.jsp";
+        addOrUpdateDrug(request,response,path,2);
+    }
+
 }

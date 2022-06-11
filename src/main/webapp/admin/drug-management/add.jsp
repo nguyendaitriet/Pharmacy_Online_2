@@ -68,7 +68,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class= "mb-4">DRUG INFORMATION</h2>
+                                <h2 class="mb-4 text-primary">DRUG INFORMATION</h2>
 
                                 <form class="parsley-examples" method="post" autocomplete="off">
                                     <div class="row mt-3">

@@ -62,7 +62,7 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-9">
-                                        <h2><b>DRUGS LIST</b></h2>
+                                        <h2 class="text-"><b>DRUGS LIST</b></h2>
                                     </div>
                                     <div class="col-md-3">
                                         <div style="float: right">
@@ -151,7 +151,6 @@
 
 </div>
 <!-- END wrapper -->
-
 <!-- Vendor js -->
 <script src="/assets/js/vendor.min.js"></script>
 

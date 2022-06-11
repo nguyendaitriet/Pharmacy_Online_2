@@ -10,7 +10,7 @@ public interface IGeneralService<T> {
 
     boolean save(T t) throws SQLException;
 
-    boolean update(T t) throws SQLException;
+    boolean update(long id, T t) throws SQLException;
 
     boolean remove(long id) throws SQLException;
 

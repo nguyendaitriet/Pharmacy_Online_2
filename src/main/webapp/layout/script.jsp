@@ -24,5 +24,5 @@
 <script src="/assets/js/app.min.js"></script>
 
 <%--FontAwesome js--%>
-<script defer src="/assets/fontawesome-free-5.15.4/js/fontawesome.js"></script>
-<script defer src="/assets/fontawesome-free-5.15.4/js/solid.js"></script>
+<%--<script defer src="/assets/fontawesome-free-5.15.4/js/fontawesome.js"></script>--%>
+<%--<script defer src="/assets/fontawesome-free-5.15.4/js/solid.js"></script>--%>

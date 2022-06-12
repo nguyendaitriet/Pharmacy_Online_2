@@ -5,6 +5,12 @@
 <head>
     <title>Admin Dashboard</title>
     <%@ include file="/layout/header-p1.jsp" %>
+
+    <link href="/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
     <%@ include file="/layout/header-p2.jsp" %>
 </head>
 
@@ -50,7 +56,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">Welcome !</h4>
+                            <h4 class="page-title">Welcome!</h4>
                             <div class="page-title-right">
                                 <ol class="breadcrumb p-0 m-0">
                                     <li class="breadcrumb-item"><a href="#">Velonic</a></li>
@@ -140,13 +146,6 @@
 </div>
 <!-- END wrapper -->
 
-
-<!-- Right Sidebar -->
-<%@ include file="/layout/sidebar-right.jsp" %>
-<!-- /Right-bar -->
-
-<!-- Right bar overlay-->
-<div class="rightbar-overlay"></div>
 
 <!-- Vendor js -->
 <%@ include file="/layout/script.jsp" %>

@@ -17,7 +17,6 @@ public class Drug {
     private long id;
     private String drugName;
     private double drugContent;
-
     private int quantity;
     private int dosageForm;
     private String usage;

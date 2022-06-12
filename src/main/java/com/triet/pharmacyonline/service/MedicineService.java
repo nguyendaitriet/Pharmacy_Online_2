@@ -15,16 +15,13 @@ import java.util.List;
 public class MedicineService implements IMedicineService {
     private static final String DRUGS_LIST = "SELECT * FROM vw_drugs_list;";
     private static final String DRUGS_LIST_DTO = "SELECT * FROM vw_drugs_list_dto;";
-    private static final String DOSAGE_FORMS_LIST = "SELECT " +
-                                                        "ds.id," +
-                                                        "ds.name " +
-                                                    "FROM dosage_forms AS ds;";
-    private static final String NEW_DRUG_ADD_SP = "CALL pharmacy_online.sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String GET_DRUG_BY_ID = "CALL pharmacy_online.sp_find_drug_by_id(?)";
-    private static final String IS_DRUG_EXISTED = "CALL pharmacy_online.sp_is_drug_existed(?, ?, ?, ?, ?, ?, ?)";
-    private static final String IS_DRUG_ID_EXISTED = "CALL pharmacy_online.sp_is_drug_id_existed(?, ?)";
-    private static final String REMOVE_DRUG_EXISTED = "CALL pharmacy_online.sp_remove_drug(?, ?)";
-    private static final String UPDATE_DRUG_EXISTED = "CALL pharmacy_online.sp_update_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String DOSAGE_FORMS_LIST = "SELECT ds.id,ds.name FROM dosage_forms AS ds;";
+    private static final String NEW_DRUG_ADD_SP = "CALL sp_add_new_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String GET_DRUG_BY_ID = "CALL sp_find_drug_by_id(?)";
+    private static final String IS_DRUG_EXISTED = "CALL sp_is_drug_existed(?, ?, ?, ?, ?, ?, ?)";
+    private static final String IS_DRUG_ID_EXISTED = "CALL sp_is_drug_id_existed(?, ?)";
+    private static final String REMOVE_DRUG_EXISTED = "CALL sp_remove_drug(?, ?)";
+    private static final String UPDATE_DRUG_EXISTED = "CALL sp_update_drug(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public List<DrugDTO> findAllDTO() {
         List<DrugDTO> drugsDTOList = new ArrayList<>();

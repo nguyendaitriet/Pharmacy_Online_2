@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-    <title>Drug List</title>
+    <title>Drugs List</title>
     <%@ include file="/layout/header-p1.jsp" %>
     <!-- Notification css (Toast) -->
     <link href="/assets/libs/toastr/css/iziToast.min.css" rel="stylesheet" type="text/css">
@@ -63,11 +63,11 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-9">
-                                        <h2 class="text-"><b>DRUGS LIST</b></h2>
+                                        <h2 class="text-dark"><b>DRUGS LIST</b></h2>
                                     </div>
                                     <div class="col-md-3">
                                         <div style="float: right">
-                                            <a href="/drugs?action=add" class="btn btn-outline-warning">
+                                            <a href="/drugs?action=add" class="btn btn-outline-purple">
                                                 <i class="fas fa-plus"></i>
                                                 <span> Add New Drug</span>
                                             </a>
@@ -78,7 +78,7 @@
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 
                                     <thead>
-                                        <tr>
+                                        <tr class="text-center">
                                             <th>#</th>
                                             <th>Drug Name</th>
                                             <th>Drug content (mg)</th>

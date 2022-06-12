@@ -68,12 +68,12 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class="mb-4 text-primary">DRUG INFORMATION</h2>
+                                <h2 class="mb-4 text-purple">DRUG INFORMATION</h2>
 
                                 <form class="parsley-examples" method="post" autocomplete="off">
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                                            <label for="drugName">Drug Name<span class="text-danger">*</span></label>
+                                            <label for="drugName">Drug Name <span class="text-danger">*</span></label>
                                             <input type="text" name="drugName" parsley-trigger="change" required="" placeholder="Drug Name" class="form-control" id="drugName"
                                                    value="${newDrug.getDrugName()}">
                                             <span class="font-15 text-muted">Example: Paracetamol</span>
@@ -95,7 +95,7 @@
                                                    value="${newDrug.getPricePerPill()}" class="form-control" id="price">
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                                            <label for="dosageForm">Dosage Form</label>
+                                            <label for="dosageForm">Dosage Form <span class="text-danger">*</span></label>
                                             <select class="form-control" data-toggle="select2" id="dosageForm" name="dosageForm">
                                                 <option disabled ${newDrug == null ? "selected" : ""}>- Choose drug dosage form -</option>
                                                 <c:forEach var="dosageForm" items="${dosageFormList}">
@@ -145,7 +145,7 @@
                                     </div>
 
                                     <div class="form-group text-right mb-0">
-                                        <button class="btn btn-primary waves-effect waves-light mr-1" type="submit">
+                                        <button class="btn btn-purple waves-effect waves-light mr-1" type="submit">
                                             Add
                                         </button>
                                         <a href="/drugs" class="btn btn-secondary waves-effect waves-light">

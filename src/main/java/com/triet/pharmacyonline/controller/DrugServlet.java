@@ -1,8 +1,6 @@
 package com.triet.pharmacyonline.controller;
 
 import com.triet.pharmacyonline.dto.DrugDTO;
-import com.triet.pharmacyonline.exceptions.ExpirationDateException;
-import com.triet.pharmacyonline.exceptions.ProductionDateException;
 import com.triet.pharmacyonline.model.DosageForm;
 import com.triet.pharmacyonline.model.Drug;
 import com.triet.pharmacyonline.service.MedicineService;
@@ -21,14 +19,12 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @WebServlet(name = "DrugServlet", value = "/drugs")
 public class DrugServlet extends HttpServlet {
-    //    private static List<String> parsingErrors = new ArrayList<>();
     MedicineService medicineService = new MedicineService();
 
     @Override
@@ -74,6 +70,9 @@ public class DrugServlet extends HttpServlet {
                 case "remove":
                     removeDrug(request, response);
                     break;
+                default:
+                    showDrugsList(request,response);
+                    break;
             }
         } catch (ParseException | SQLException ex) {
             throw new ServletException(ex);
@@ -94,7 +93,6 @@ public class DrugServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/drug-management/add.jsp");
         dispatcher.forward(request, response);
     }
-
 
     private void addDrug(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException {
         String path = "/admin/drug-management/add.jsp";
@@ -152,9 +150,9 @@ public class DrugServlet extends HttpServlet {
 
     }
 
-
     public ArrayList<String> getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException {
         ArrayList<String> parsingErrors = new ArrayList<>();
+
         drug.setDrugName(request.getParameter("drugName").toLowerCase());
 
         String drugContent = request.getParameter("drugContent");
@@ -181,7 +179,7 @@ public class DrugServlet extends HttpServlet {
         } else parsingErrors.add("Invalid value of Dosage Form!");
 
         String productionDate = request.getParameter("productionDate");
-        if (ParsingValidationUtils.isDateParsing(productionDate)) {
+        if (ParsingValidationUtils.isDateParsingType1(productionDate)) {
             drug.setProductionDate(new SimpleDateFormat("MM/dd/yyyy").parse(productionDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             if (ValidationUtils.checkProductionDate(drug.getProductionDate())) {
                 drug.setProductionDate(drug.getProductionDate());
@@ -190,19 +188,14 @@ public class DrugServlet extends HttpServlet {
         } else parsingErrors.add("Invalid value of Production Date!");
 
         String expirationDate = request.getParameter("expirationDate");
-        if (ParsingValidationUtils.isDateParsing(expirationDate)) {
+        if (ParsingValidationUtils.isDateParsingType1(expirationDate)) {
             drug.setExpirationDate(new SimpleDateFormat("MM/dd/yyyy").parse(expirationDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             if (ValidationUtils.checkExpirationDate(drug.getExpirationDate())) {
                 drug.setExpirationDate(drug.getExpirationDate());
             } else
                 parsingErrors.add("Expiration Date must NOT be greater than " + ValidationUtils.validExpirationDate + ".");
         } else parsingErrors.add("Invalid value of Expiration Date!");
-//        if (!ValidationUtils.checkProductionDate(drug.getProductionDate())) {
-//            throw new ProductionDateException();
-//        }
-//        if (!ValidationUtils.checkExpirationDate(drug.)) {
-//            throw new ExpirationDateException();
-//        }
+
         return parsingErrors;
     }
 
@@ -257,5 +250,4 @@ public class DrugServlet extends HttpServlet {
         String path = "/admin/drug-management/edit.jsp";
         addOrUpdateDrug(request, response, path, 2);
     }
-
 }

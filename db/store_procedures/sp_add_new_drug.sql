@@ -8,7 +8,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_add_new_drug`(
     IN productionDate DATE,
     IN expirationDate DATE,
     IN note VARCHAR(200),
-    OUT `error` BOOLEAN
+    OUT `error` BOOLEAN,
+    IN id BIGINT
 )
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;

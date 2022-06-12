@@ -2,8 +2,6 @@ package com.triet.pharmacyonline.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 
 public class ParsingValidationUtils {
@@ -34,9 +32,17 @@ public class ParsingValidationUtils {
         }
     }
 
-    public static boolean isDateParsing(String date) {
+    public static boolean isDateParsingType1(String date) {
         try {
             new SimpleDateFormat("MM/dd/yyyy").parse(date);
+            return true;
+        } catch (final ParseException e) {
+            return false;
+        }
+    }
+    public static boolean isDateParsingType2(String date) {
+        try {
+            new SimpleDateFormat("yyyy-MM-dd").parse(date);
             return true;
         } catch (final ParseException e) {
             return false;

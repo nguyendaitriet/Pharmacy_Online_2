@@ -3,55 +3,24 @@
     <li class="menu-title">Navigation</li>
 
     <li>
-        <a href="javascript: void(0);" class="waves-effect">
+        <a href="/admin" class="waves-effect">
             <i class="ion-md-speedometer"></i>
             <span>  Dashboard  </span>
-            <span class="badge badge-info badge-pill float-right"> 3 </span>
         </a>
-        <ul class="nav-second-level" aria-expanded="false">
-            <li><a href="index.html">Dashboard 1</a></li>
-            <li><a href="dashboard-2.html">Dashboard 2</a></li>
-            <li><a href="dashboard-3.html">Dashboard 3</a></li>
-        </ul>
     </li>
 
     <li>
-        <a href="javascript: void(0);" class="waves-effect">
-            <i class="ion-md-basket"></i>
-            <span> UI Elements </span>
-            <span class="menu-arrow"></span>
+        <a href="/drugs" class="waves-effect">
+            <i class="fas fa-file-medical"></i>
+            <span> Medicine Management </span>
         </a>
-        <ul class="nav-second-level" aria-expanded="false">
-
-            <li><a href="ui-typography.html">Typography</a></li>
-            <li><a href="ui-buttons.html">Buttons</a></li>
-            <li><a href="ui-fontawesome.html">Font Awesome Icons</a></li>
-            <li><a href="ui-materialdesign.html">Material Design Icons</a></li>
-            <li><a href="ui-ionicons.html">Ion Icons</a></li>
-            <li><a href="ui-cards.html">Cards</a></li>
-            <li><a href="ui-tabs-accordions.html">Tabs &amp; Accordions</a></li>
-            <li><a href="ui-modals.html">Modals</a></li>
-            <li><a href="ui-bootstrap-ui.html">BS Elements</a></li>
-            <li><a href="ui-progressbars.html">Progress Bars</a></li>
-            <li><a href="ui-notification.html">Notification</a></li>
-            <li><a href="ui-sweet-alert.html">Sweet-Alert</a></li>
-        </ul>
     </li>
 
     <li>
-        <a href="javascript: void(0);" class="waves-effect">
+        <a href="/users" class="waves-effect">
             <i class="ion-ios-apps"></i>
-            <span> Components </span>
-            <span class="menu-arrow"></span>
+            <span> User Management </span>
         </a>
-        <ul class="nav-second-level" aria-expanded="false">
-            <li><a href="components-grid.html">Grid</a></li>
-            <li><a href="components-portlets.html">Portlets</a></li>
-            <li><a href="components-widgets.html">Widgets</a></li>
-            <li><a href="components-nestable-list.html">Nesteble</a></li>
-            <li><a href="components-calendar.html">Calendar</a></li>
-            <li><a href="components-range-sliders.html">Range Slider</a></li>
-        </ul>
     </li>
 
     <li>

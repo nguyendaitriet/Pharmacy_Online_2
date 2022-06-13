@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">Welcome!</h4>
+                            <h4 class="page-title">Welcome to Administrator Page</h4>
                             <div class="clearfix"></div>
                         </div>
                     </div>
@@ -69,38 +69,10 @@
                             <div class="card-body widget-style-2">
                                 <div class="text-white media">
                                     <div class="media-body align-self-center">
-                                        <h2 class="my-0 text-white"><span data-plugin="counterup">50</span></h2>
-                                        <p class="mb-0">Daily Visits</p>
+                                        <p class="mb-2">Total Account</p>
+                                        <h2 class="my-0 text-white"><span data-plugin="counterup">${totalAccounts}</span></h2>
                                     </div>
-                                    <i class="ion-md-eye"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-sm-6">
-                        <div class="card bg-purple">
-                            <div class="card-body widget-style-2">
-                                <div class="text-white media">
-                                    <div class="media-body align-self-center">
-                                        <h2 class="my-0 text-white"><span data-plugin="counterup">12056</span></h2>
-                                        <p class="mb-0">Sales</p>
-                                    </div>
-                                    <i class="ion-md-paper-plane"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-sm-6">
-                        <div class="card bg-info">
-                            <div class="card-body widget-style-2">
-                                <div class="text-white media">
-                                    <div class="media-body align-self-center">
-                                        <h2 class="my-0 text-white"><span data-plugin="counterup">1268</span></h2>
-                                        <p class="mb-0">New Orders</p>
-                                    </div>
-                                    <i class="ion-ios-pricetag"></i>
+                                    <i class="ion ion-ios-people"></i>
                                 </div>
                             </div>
                         </div>
@@ -111,10 +83,50 @@
                             <div class="card-body widget-style-2">
                                 <div class="text-white media">
                                     <div class="media-body align-self-center">
-                                        <h2 class="my-0 text-white"><span data-plugin="counterup">145</span></h2>
-                                        <p class="mb-0">New Users</p>
+                                        <p class="mb-0 my-0 text-white">User</p>
+                                        <p class="mb-0 ">Active
+                                            <span class="my-0 text-white" data-plugin="counterup">${activeUsers}</span>
+                                        </p>
+                                        <p class="mb-0 ">Blocked
+                                            <span class="my-0 text-white" data-plugin="counterup">${blockedUsers}</span>
+                                        </p>
                                     </div>
-                                    <i class="mdi mdi-comment-multiple"></i>
+                                    <i class="ion ion-ios-person"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6">
+                        <div class="card bg-info">
+                            <div class="card-body widget-style-2">
+                                <div class="text-white media">
+                                    <div class="media-body align-self-center">
+                                        <div class="media-body align-self-center">
+                                            <p class="mb-0 my-0 text-white">Admin</p>
+                                            <p class="mb-0 ">Active
+                                                <span class="my-0 text-white" data-plugin="counterup">${activeAdmins}</span>
+                                            </p>
+                                            <p class="mb-0 ">Blocked
+                                                <span class="my-0 text-white" data-plugin="counterup">${blockedAdmins}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <i class="ion ion-ios-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6">
+                        <div class="card bg-secondary">
+                            <div class="card-body widget-style-2">
+                                <div class="text-white media">
+                                    <div class="media-body align-self-center">
+                                        <p class="mb-0">Total drug</p>
+                                        <h2 class="my-0 text-white"><span data-plugin="counterup">${totalDrugs}</span></h2>
+                                    </div>
+                                    <i class="ion ion-md-medkit"></i>
                                 </div>
                             </div>
                         </div>

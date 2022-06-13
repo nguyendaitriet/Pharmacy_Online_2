@@ -146,7 +146,7 @@
                                             Remove
                                         </button>
                                         <a href="/drugs" class="btn btn-secondary waves-effect waves-light">
-                                            <span>Cancel</span>
+                                            <span>back</span>
                                         </a>
                                     </div>
                                 </form>

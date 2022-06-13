@@ -126,7 +126,7 @@ public class MedicineService implements IMedicineService {
     }
 
     @Override
-    public boolean update(long id, Drug drug) throws SQLException {
+    public boolean update(Drug drug) throws SQLException {
         Connection connection = MySQLConnUtils.getSqlConnection();
         CallableStatement statement = connection.prepareCall(UPDATE_DRUG_EXISTED);
         return setParameters(statement, drug);

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                2015 - 2020 &copy; Velonic theme by <a href="">Coderthemes</a>
+                2022 &copy; <a href="">Pharmacy Online</a>
             </div>
         </div>
     </div>

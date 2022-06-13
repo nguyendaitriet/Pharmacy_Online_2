@@ -25,7 +25,7 @@ import java.util.*;
 
 @WebServlet(name = "DrugServlet", value = "/drugs")
 public class DrugServlet extends HttpServlet {
-    MedicineService medicineService = new MedicineService();
+    private static final MedicineService medicineService = new MedicineService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -125,7 +125,7 @@ public class DrugServlet extends HttpServlet {
                 }
                 //update drug
                 case 2: {
-                    if (medicineService.update(inputDrug.getId(), inputDrug)) {
+                    if (medicineService.update(inputDrug)) {
                         request.setAttribute("successfully", "Successful operation!");
                     } else {
                         request.setAttribute("failed", "Failed operation. Please contact to the manager!");
@@ -153,19 +153,33 @@ public class DrugServlet extends HttpServlet {
     public ArrayList<String> getNewDrug(HttpServletRequest request, Drug drug) throws ParseException, NumberFormatException {
         ArrayList<String> parsingErrors = new ArrayList<>();
 
+        String action = request.getParameter("action");
+
+        if (action.equals("edit")) {
+            String drugId = request.getParameter("id");
+
+            if (ParsingValidationUtils.isIntParsing(drugId)) {
+                drug.setId(Integer.parseInt(drugId));
+            }
+            else parsingErrors.add("Invalid ID!");
+        }
+
         drug.setDrugName(request.getParameter("drugName").toLowerCase());
 
         String drugContent = request.getParameter("drugContent");
+
         if (ParsingValidationUtils.isDecimalParsing(drugContent)) {
             drug.setDrugContent(Double.parseDouble(drugContent));
         } else parsingErrors.add("Invalid value of Drug Content!");
 
         String quantity = request.getParameter("quantity");
+
         if (ParsingValidationUtils.isIntParsing(quantity)) {
             drug.setQuantity(Integer.parseInt(quantity));
         } else parsingErrors.add("Invalid value of Quantity!");
 
         String price = request.getParameter("price");
+
         if (ParsingValidationUtils.isLongParsing(price)) {
             drug.setPricePerPill(BigDecimal.valueOf(Long.parseLong(price)));
         } else parsingErrors.add("Invalid value of Price!");
@@ -174,11 +188,13 @@ public class DrugServlet extends HttpServlet {
         drug.setNote(request.getParameter("note").trim());
 
         String dosageForm = request.getParameter("dosageForm");
+
         if (ParsingValidationUtils.isIntParsing(dosageForm)) {
             drug.setDosageForm(Integer.parseInt(dosageForm));
         } else parsingErrors.add("Invalid value of Dosage Form!");
 
         String productionDate = request.getParameter("productionDate");
+
         if (ParsingValidationUtils.isDateParsingType1(productionDate)) {
             drug.setProductionDate(new SimpleDateFormat("MM/dd/yyyy").parse(productionDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             if (ValidationUtils.checkProductionDate(drug.getProductionDate())) {
@@ -188,6 +204,7 @@ public class DrugServlet extends HttpServlet {
         } else parsingErrors.add("Invalid value of Production Date!");
 
         String expirationDate = request.getParameter("expirationDate");
+
         if (ParsingValidationUtils.isDateParsingType1(expirationDate)) {
             drug.setExpirationDate(new SimpleDateFormat("MM/dd/yyyy").parse(expirationDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             if (ValidationUtils.checkExpirationDate(drug.getExpirationDate())) {

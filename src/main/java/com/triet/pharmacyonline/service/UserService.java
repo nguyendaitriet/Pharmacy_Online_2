@@ -5,6 +5,8 @@ import com.triet.pharmacyonline.model.*;
 import com.triet.pharmacyonline.utils.MySQLConnUtils;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +53,9 @@ public class UserService implements IUserService {
         String email = rs.getString("email");
         String role = rs.getString("role");
         Date dateOfBirth = rs.getDate("dateOfBirth");
-        String creationDate = rs.getString("creationDate");
+        LocalDateTime rawCreationDate = rs.getTimestamp("creationDate").toLocalDateTime();
+        String creationDate = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' hh:mm:ss").format(rawCreationDate);
+
         boolean blocked = rs.getBoolean("blocked");
 
         return new UserDTO(id, fullName, gender, phoneNumber, email, address, dateOfBirth, creationDate, role, username,blocked);
@@ -109,7 +113,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean update(long id, User user) throws SQLException {
+    public boolean update(User user) throws SQLException {
         return false;
     }
 

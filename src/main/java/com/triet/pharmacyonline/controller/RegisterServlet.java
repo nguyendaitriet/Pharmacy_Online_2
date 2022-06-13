@@ -21,13 +21,14 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @WebServlet(name = "RegisterServlet", value = "/register")
 public class RegisterServlet extends HttpServlet {
-    UserService userService = new UserService();
+    private static final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,7 +70,7 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("errors", constraintViolations);
             request.setAttribute("invalidInput", parsingErrors);
             request.setAttribute("user", inputUser);
-
+            request.setAttribute("dateOfBirth", new SimpleDateFormat("yyyy-MM-dd").format(inputUser.getDateOfBirth()));
             List<Gender> gendersList = userService.getGenders();
             request.setAttribute("genders", gendersList);
 

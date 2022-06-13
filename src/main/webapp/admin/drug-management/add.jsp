@@ -64,6 +64,7 @@
 
             <!-- Start Content-->
             <div class="container-fluid">
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -149,7 +150,7 @@
                                             Add
                                         </button>
                                         <a href="/drugs" class="btn btn-secondary waves-effect waves-light">
-                                            <span>Cancel</span>
+                                            <span>Back</span>
                                         </a>
                                     </div>
                                 </form>
@@ -168,7 +169,7 @@
                     iziToast.error({
                         title: 'Error',
                         message: '${error.getMessage()}',
-                        timeout: 10000,
+                        timeout: false,
                         progressBar: false,
                         position: "topRight"
                     });
@@ -181,7 +182,7 @@
                     iziToast.error({
                         title: 'Error',
                         message: '${error}',
-                        timeout: 10000,
+                        timeout: false,
                         progressBar: false,
                         position: "topRight"
                     });

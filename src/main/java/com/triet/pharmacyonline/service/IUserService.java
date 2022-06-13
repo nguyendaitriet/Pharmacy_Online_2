@@ -16,7 +16,7 @@ public interface IUserService extends IGeneralService<User>{
     boolean save(User user) throws SQLException;
 
     @Override
-    boolean update(long id, User user) throws SQLException;
+    boolean update(User user) throws SQLException;
 
     @Override
     boolean remove(long id) throws SQLException;

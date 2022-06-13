@@ -146,7 +146,7 @@
                                             Update
                                         </button>
                                         <a href="/drugs" class="btn btn-dark waves-effect waves-light">
-                                            <span>Cancel</span>
+                                            <span>Back</span>
                                         </a>
                                     </div>
                                 </form>
@@ -172,7 +172,7 @@
                 iziToast.error({
                     title: 'Hey',
                     message: '${failed}',
-                    timeout: 7000,
+                    timeout: false,
                     progressBar: false,
                     position: "topRight"
                 });
@@ -184,7 +184,7 @@
                     iziToast.error({
                         title: 'Error',
                         message: '${error}',
-                        timeout: 10000,
+                        timeout: false,
                         progressBar: false,
                         position: "topRight"
                     });
@@ -197,7 +197,7 @@
                     iziToast.error({
                         title: 'Error',
                         message: '${error.getMessage()}',
-                        timeout: 10000,
+                        timeout: false,
                         progressBar: false,
                         position: "topRight"
                     });

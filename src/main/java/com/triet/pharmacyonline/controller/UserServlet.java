@@ -16,7 +16,8 @@ import java.sql.SQLException;
 
 @WebServlet(name="UserServlet", value = "/users")
 public class UserServlet  extends HttpServlet {
-    UserService userService = new UserService();
+
+    private static final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

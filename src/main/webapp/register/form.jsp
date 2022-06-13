@@ -68,14 +68,14 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h2 class="mb-4 text-purple">Register Form</h2>
+                                <h2 class="mb-4 text-info">Register Form</h2>
 
                                 <form class="parsley-examples" method="post" autocomplete="off">
 
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="fullName">Full Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="fullName" parsley-trigger="change" required="" placeholder="Drug Name" class="form-control" id="fullName"
+                                            <input type="text" name="fullName" parsley-trigger="change" required="" placeholder="full name" class="form-control" id="fullName"
                                                    value="${user.getFullName()}">
                                             <span class="font-15 text-muted mt-3">Example: Nguyen Van Nam</span>
                                         </div>
@@ -91,19 +91,19 @@
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                             <label for="dateOfBirth">Date of Birth <span class="text-danger">*</span></label>
                                                 <input class="form-control" id="dateOfBirth" type="date" name="dateOfBirth" required=""
-                                                       value="${user.getDateOfBirth()}">
+                                                       value="${dateOfBirth}">
                                         </div>
                                     </div>
 
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                                            <label for="phoneNumber">Phone Number<span class="text-danger">*</span></label>
+                                            <label for="phoneNumber">Phone Number <span class="text-danger">*</span></label>
                                             <input type="text" name="phoneNumber" placeholder="phone number" required=""
                                                    value="${user.getPhoneNumber()}" class="form-control" id="phoneNumber">
                                             <span class="font-15 text-muted">Example: 0783465748</span>
                                         </div>
                                         <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                                            <label for="email">Email<span class="text-danger">*</span></label>
+                                            <label for="email">Email <span class="text-danger">*</span></label>
                                             <input type="text" name="email" placeholder="email address" required=""
                                                    value="${user.getEmail()}" class="form-control" id="email">
                                         </div>
@@ -116,26 +116,26 @@
 
                                     <div class="row mt-3">
                                         <div class="form-group col-md-7">
-                                            <label for="username" class="col-md-4 col-form-label">Username<span class="text-danger">*</span></label>
+                                            <label for="username" class="col-md-4 col-form-label">Username <span class="text-danger">*</span></label>
                                             <input type="text" required="" class="form-control" id="username" placeholder="username"
                                                        value="${user.getUsername()}" name="username">
                                             <span class="font-15 text-muted">Note: Must start with A LETTER, other characters can be alphabets, numbers or an underscore and length constraint is from 8 to 20 characters</span>
                                         </div>
                                         <div class="form-group mt-3 col-md-7">
-                                            <label for="hori-pass1" class="col-md-4 col-form-label">Password<span class="text-danger">*</span></label>
+                                            <label for="hori-pass1" class="col-md-4 col-form-label">Password <span class="text-danger">*</span></label>
                                             <input id="hori-pass1" type="password" placeholder="Password" required="" class="form-control"
                                                        value="${user.getPassword()}">
                                             <span class="font-15 text-muted">Note: Minimum eight characters, at least one letter, one number and one special character @$!%*#?&</span>
                                         </div>
                                         <div class="form-group mt-3 col-md-7">
-                                            <label for="hori-pass2" class="col-md-4 col-form-label">Confirm Password<span class="text-danger">*</span></label>
+                                            <label for="hori-pass2" class="col-md-4 col-form-label">Confirm Password <span class="text-danger">*</span></label>
                                             <input data-parsley-equalto="#hori-pass1" type="password" required="" placeholder="Password" class="form-control" id="hori-pass2"
                                                        value="${user.getPassword()}" name="password">
                                         </div>
                                     </div>
 
                                     <div class="form-group text-right mb-0">
-                                        <button class="btn btn-purple waves-effect waves-light mr-1" type="submit">
+                                        <button class="btn btn-info waves-effect waves-light mr-1" type="submit">
                                             Submit
                                         </button>
                                         <button class="btn btn-secondary waves-effect waves-light" type="reset">
@@ -157,8 +157,8 @@
                 <script>
                     iziToast.error({
                         title: 'Error',
-                        message: '${error.getMessage()}',
-                        timeout: 10000,
+                        message: "${error.getMessage()}",
+                        timeout: false,
                         progressBar: false,
                         position: "topRight"
                     });
@@ -171,7 +171,7 @@
                     iziToast.error({
                         title: 'Error',
                         message: '${error}',
-                        timeout: 10000,
+                        timeout: false,
                         progressBar: false,
                         position: "topRight"
                     });

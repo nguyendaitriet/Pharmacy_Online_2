@@ -2,6 +2,7 @@ package com.triet.pharmacyonline.model;
 
 import com.triet.pharmacyonline.utils.ValidationUtils;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
@@ -45,6 +46,7 @@ public class User {
         this.id = id;
     }
 
+    @NotNull(message = "Full Name must NOT be null.")
     @Pattern(regexp = ValidationUtils.FULL_NAME_REGEX,
             message = "Full Name must only contain letters, capitalize first letter of each word and no redundant whitespace.")
     public String getFullName() {
@@ -55,6 +57,7 @@ public class User {
         this.fullName = fullName;
     }
 
+    @NotNull(message = "Gender must NOT be null.")
     public int getGender() {
         return gender;
     }
@@ -63,6 +66,7 @@ public class User {
         this.gender = gender;
     }
 
+    @NotNull(message = "Phone Number must NOT be null.")
     @Pattern(regexp = ValidationUtils.PHONE_REGEX,
             message = "Phone Number: First digit must be '0', second digit is form '1' to '9' and length is from 10 to 11 digits.")
     public String getPhoneNumber() {
@@ -73,6 +77,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    @NotNull(message = "Email Address must NOT be null.")
     public String getEmail() {
         return email;
     }
@@ -89,6 +94,7 @@ public class User {
         this.address = address;
     }
 
+    @NotNull(message = "Date of birth must NOT be null.")
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -121,6 +127,7 @@ public class User {
         this.blocked = blocked;
     }
 
+    @NotNull(message = "Username must NOT be null.")
     @Pattern(regexp = ValidationUtils.USERNAME_REGEX,
             message = "Invalid username!")
     public String getUsername() {
@@ -130,6 +137,8 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @NotNull(message = "Password must NOT be null.")
     @Pattern(regexp = ValidationUtils.PASSWORD_REGEX,
             message = "Invalid password!")
     public String getPassword() {

@@ -1,10 +1,9 @@
 package com.triet.pharmacyonline.model;
 
 import com.triet.pharmacyonline.utils.ValidationUtils;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -94,6 +93,8 @@ public class Drug {
     }
 
     @NotEmpty(message = "Drug Name must NOT be empty.")
+    //length
+    @Length(max = 100, message = "Drug Name must be less than 100 letters")
     @Pattern(regexp = ValidationUtils.DRUG_NAME_REGEX,
             message = "Drug Name must NOT contain DIGIT, SPECIAL CHARACTER or redundant WHITESPACE.")
     public String getDrugName() {

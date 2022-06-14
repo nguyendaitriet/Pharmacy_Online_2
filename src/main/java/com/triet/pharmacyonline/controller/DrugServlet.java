@@ -71,7 +71,7 @@ public class DrugServlet extends HttpServlet {
                     removeDrug(request, response);
                     break;
                 default:
-                    showDrugsList(request,response);
+                    showDrugsList(request, response);
                     break;
             }
         } catch (ParseException | SQLException ex) {
@@ -107,34 +107,39 @@ public class DrugServlet extends HttpServlet {
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<Drug>> constraintViolations = validator.validate(inputDrug);
 
-        if (constraintViolations.isEmpty() && parsingErrors.isEmpty()) {
-            switch (action) {
-                //add new drug
-                case 1: {
-                    if (!medicineService.isExisted(inputDrug)) {
-                        if (medicineService.save(inputDrug)) {
-                            request.setAttribute("successfully", "Successful operation!");
-                            inputDrug = new Drug();
-                        } else {
-                            request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+        String id = request.getParameter("id");
+        if (ParsingValidationUtils.isLongParsing(id)) {
+            long validId = Long.parseLong(id);
+            if (medicineService.isIdExisted(validId)) {
+                if (constraintViolations.isEmpty() && parsingErrors.isEmpty()) {
+                    switch (action) {
+                        //add new drug
+                        case 1: {
+                            if (!medicineService.isExisted(inputDrug)) {
+                                if (medicineService.save(inputDrug)) {
+                                    request.setAttribute("successfully", "Successful operation!");
+                                    inputDrug = new Drug();
+                                } else {
+                                    request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                                }
+                            } else {
+                                request.setAttribute("anotherError", "Drug existed! Please enter another Drug Name or Drug Content.");
+                            }
+                            break;
                         }
-                    } else {
-                        request.setAttribute("anotherError", "Drug existed! Please enter another Drug Name or Drug Content.");
+                        //update drug
+                        case 2: {
+                            if (medicineService.update(inputDrug)) {
+                                request.setAttribute("successfully", "Successful operation!");
+                            } else {
+                                request.setAttribute("failed", "Failed operation. Please contact to the manager!");
+                            }
+                            break;
+                        }
                     }
-                    break;
                 }
-                //update drug
-                case 2: {
-                    if (medicineService.update(inputDrug)) {
-                        request.setAttribute("successfully", "Successful operation!");
-                    } else {
-                        request.setAttribute("failed", "Failed operation. Please contact to the manager!");
-                    }
-                    break;
-                }
-            }
-
-        }
+            } else parsingErrors.add("Drug ID doesn't exist. Try again!");
+        } else parsingErrors.add("Drug ID doesn't exist. Try again!");
 
         request.setAttribute("productionDate", inputDrug.getProductionDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         request.setAttribute("expirationDate", inputDrug.getExpirationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
@@ -160,8 +165,7 @@ public class DrugServlet extends HttpServlet {
 
             if (ParsingValidationUtils.isIntParsing(drugId)) {
                 drug.setId(Integer.parseInt(drugId));
-            }
-            else parsingErrors.add("Invalid ID!");
+            } else parsingErrors.add("Invalid ID!");
         }
 
         drug.setDrugName(request.getParameter("drugName").toLowerCase());

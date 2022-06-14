@@ -1,6 +1,7 @@
 package com.triet.pharmacyonline.model;
 
 import com.triet.pharmacyonline.utils.ValidationUtils;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -47,6 +48,8 @@ public class User {
     }
 
     @NotNull(message = "Full Name must NOT be null.")
+    //length
+    @Length (max = 100, message = "Full Name must be less than 100 letters")
     @Pattern(regexp = ValidationUtils.FULL_NAME_REGEX,
             message = "Full Name must only contain letters, capitalize first letter of each word and no redundant whitespace.")
     public String getFullName() {

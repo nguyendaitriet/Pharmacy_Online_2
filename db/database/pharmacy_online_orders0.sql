@@ -16,37 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `order_items`
+-- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `order_items`;
+DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_items` (
+CREATE TABLE `orders` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `drugId` bigint NOT NULL,
-  `quantity` int NOT NULL,
-  `totalPrice` decimal(10,0) NOT NULL,
-  `orderId` bigint NOT NULL,
+  `grandTotal` decimal(10,0) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `address` varchar(200) NOT NULL,
   `creationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `price` decimal(10,0) NOT NULL,
+  `userId` bigint NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `drugId_idx` (`drugId`),
-  KEY `orderId_idx` (`orderId`),
-  CONSTRAINT `drugId` FOREIGN KEY (`drugId`) REFERENCES `drugs` (`id`),
-  CONSTRAINT `orderId` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`)
+  KEY `userId_idx` (`userId`),
+  CONSTRAINT `userId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order_items`
+-- Dumping data for table `orders`
 --
 
-LOCK TABLES `order_items` WRITE;
-/*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (1,1,50,650000,2,'2022-01-06 00:00:00',650),(2,1,50,650000,3,'2022-01-06 00:00:00',650),(3,1,50,650000,1,'2022-01-06 00:00:00',650),(4,1,50,650000,2,'2022-01-06 00:00:00',650),(5,1,50,650000,2,'2022-01-06 00:00:00',650);
-/*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(2,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(3,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(4,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(5,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1);
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-13  8:03:13
+-- Dump completed on 2022-06-15  9:20:27

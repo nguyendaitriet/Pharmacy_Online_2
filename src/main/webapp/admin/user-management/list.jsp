@@ -7,7 +7,7 @@
 <head>
     <title>Users List</title>
     <%@ include file="/layout/header-p1.jsp" %>
-    <!-- Notification css (Toast) -->
+
     <link href="/assets/libs/toastr/css/iziToast.min.css" rel="stylesheet" type="text/css">
 
     <link href="/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
@@ -21,39 +21,24 @@
 
 <body>
 
-<!-- Begin page -->
 <div id="wrapper">
 
-    <!-- Topbar Start -->
     <%@ include file="/layout/topbar.jsp" %>
-    <!-- end Topbar --> <!-- ========== Left Sidebar Start ========== -->
 
     <div class="left-side-menu">
 
         <div class="slimscroll-menu">
-
-            <!--- Sidemenu -->
             <div id="sidebar-menu">
                 <%@ include file="/layout/sidebar-left.jsp" %>
             </div>
-            <!-- End Sidebar -->
-
             <div class="clearfix"></div>
-
         </div>
-        <!-- Sidebar -left -->
 
     </div>
-    <!-- Left Sidebar End -->
-
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
 
     <div class="content-page">
         <div class="content">
 
-            <!-- Start Content-->
             <div class="container-fluid">
 
                 <div class="row">
@@ -82,31 +67,28 @@
                                     </thead>
 
                                     <tbody>
-                                    <c:set var="i" value="0"></c:set>
-                                    <c:forEach var="userDTO" items="${userDTOList}">
-                                        <tr id="userInfo-${userDTO.getId()}">
-                                            <td class="text-center">${i=i+1}</td>
-                                            <td>${userDTO.getFullName()}</td>
-                                            <td>${userDTO.getPhoneNumber()}</td>
-                                            <td>${userDTO.getEmail()}</td>
-                                            <td>${userDTO.getRole()}</td>
-                                            <td>${userDTO.getCreationDate()}</td>
-<%--                                            <td>--%>
-<%--                                                <fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${userDTO.getCreationDate()}" />--%>
-<%--                                            </td>--%>
-                                            <td class="text-center">
-                                                <a title="Detail" href="/users?action=detail&id=${userDTO.getId()}" class="btn btn-outline-secondary" id="detail-${userDTO.getId()}">
-                                                    <i class="fas fa-info"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <c:if test="${userDTO.isBlocked()}">
-                                            <script>
-                                                document.querySelector("#userInfo-${userDTO.getId()}").className="bg-danger text-white";
-                                                document.querySelector("#detail-${userDTO.getId()}").className="btn btn-outline-warning";
-                                            </script>
-                                        </c:if>
-                                    </c:forEach>
+                                        <c:set var="i" value="0"></c:set>
+                                        <c:forEach var="userDTO" items="${userDTOList}">
+                                            <tr id="userInfo-${userDTO.getId()}">
+                                                <td class="text-center">${i=i+1}</td>
+                                                <td>${userDTO.getFullName()}</td>
+                                                <td>${userDTO.getPhoneNumber()}</td>
+                                                <td>${userDTO.getEmail()}</td>
+                                                <td>${userDTO.getRole()}</td>
+                                                <td>${userDTO.getCreationDate()}</td>
+                                                <td class="text-center">
+                                                    <a title="Detail" href="/users?action=detail&id=${userDTO.getId()}" class="btn btn-outline-secondary" id="detail-${userDTO.getId()}">
+                                                        <i class="fas fa-info"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <c:if test="${userDTO.isBlocked()}">
+                                                <script>
+                                                    document.querySelector("#userInfo-${userDTO.getId()}").className="bg-danger text-white";
+                                                    document.querySelector("#detail-${userDTO.getId()}").className="btn btn-outline-warning";
+                                                </script>
+                                            </c:if>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -114,16 +96,9 @@
                     </div>
                 </div>
             </div>
-            <!-- end container-fluid -->
         </div>
-        <!-- end content -->
-
-        <!-- Footer Start -->
         <%@ include file="/layout/footer.jsp" %>
-        <!-- end Footer -->
-
     </div>
-
     <c:if test="${invalidID != null}">
         <script>
             iziToast.error({
@@ -135,12 +110,8 @@
             });
         </script>
     </c:if>
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
 
 </div>
-<!-- END wrapper -->
 <!-- Vendor js -->
 <script src="/assets/js/vendor.min.js"></script>
 

@@ -16,28 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `dosage_forms`
+-- Table structure for table `order_items`
 --
 
-DROP TABLE IF EXISTS `dosage_forms`;
+DROP TABLE IF EXISTS `order_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dosage_forms` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
+CREATE TABLE `order_items` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `drugId` bigint NOT NULL,
+  `quantity` int NOT NULL,
+  `totalPrice` decimal(10,0) NOT NULL,
+  `orderId` bigint NOT NULL,
+  `creationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `price` decimal(10,0) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `drugId_idx` (`drugId`),
+  KEY `orderId_idx` (`orderId`),
+  CONSTRAINT `drugId` FOREIGN KEY (`drugId`) REFERENCES `drugs` (`id`),
+  CONSTRAINT `orderId` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dosage_forms`
+-- Dumping data for table `order_items`
 --
 
-LOCK TABLES `dosage_forms` WRITE;
-/*!40000 ALTER TABLE `dosage_forms` DISABLE KEYS */;
-INSERT INTO `dosage_forms` VALUES (1,'Capsule'),(2,'Tablet'),(3,'Syrups'),(4,'Powder'),(5,'Lozenges ');
-/*!40000 ALTER TABLE `dosage_forms` ENABLE KEYS */;
+LOCK TABLES `order_items` WRITE;
+/*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
+INSERT INTO `order_items` VALUES (1,1,50,650000,2,'2022-01-06 00:00:00',650),(2,1,50,650000,3,'2022-01-06 00:00:00',650),(3,1,50,650000,1,'2022-01-06 00:00:00',650),(4,1,50,650000,2,'2022-01-06 00:00:00',650),(5,1,50,650000,2,'2022-01-06 00:00:00',650);
+/*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-13  8:03:13
+-- Dump completed on 2022-06-15  9:20:26

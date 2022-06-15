@@ -44,7 +44,7 @@ CREATE TABLE `users` (
   KEY `role_idx` (`role`),
   CONSTRAINT `gender` FOREIGN KEY (`gender`) REFERENCES `genders` (`id`),
   CONSTRAINT `role` FOREIGN KEY (`role`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'nguyenpham123','nguyen1234!','Pham Nguyen','Hue','2000-06-05','nguyen@gmail.com','0124327564','2022-06-05 00:00:00',1,0,1),(2,'nguyenpha123','nguyen1234!','Pham Nguyen','Hue','2000-06-05','guyen@gmail.com','0124323532','2022-06-05 00:00:00',1,0,1),(3,'nguyenm123','nguyen1234!','Pham Nguyen','Hue','2000-06-05','ngun@gmail.com','0325345564','2022-06-05 00:00:00',1,0,1),(4,'namnguyen','nam1122!','Nguyen Nam','Ha Noi','1998-07-05','nam@mail.com','0134354254','2022-06-11 15:25:07',1,0,2),(5,'hoale889','hoa3332!','Le Thi Hoa','Thanh Hoa','1996-12-04','lehoa@gmail.com','0674356322','2022-06-11 15:26:15',2,0,2),(6,'nhathung99','hung342!','Pham Nhat Hung','Lai Chau','1991-11-19','hung@gmail.com','0346554678','2022-06-12 14:57:01',1,0,1),(7,'tuan123','tuan123!','Nguyen Tuan','Hai Duong','1994-09-01','tuan213@gmail.com','0456847455','2022-06-12 15:03:37',1,0,3),(8,'qynyna123','Pa$$w0rd!','Rose Kirkland','Ipsam consequatur B','2000-01-30','dehenoly@mailinator.com','0783465748','2022-06-12 21:26:44',1,0,2);
+INSERT INTO `users` VALUES (1,'nguyenpham123','nguyen1234!','Nguyen Pham','Hue','2000-06-05','nguyen@gmail.com','0124327564','2022-06-05 00:00:00',1,0,1),(4,'namnguyen','nam1122!','Nguyen Nam','Ha Noi','1998-07-05','nam@mail.com','0134354254','2022-06-11 15:25:07',1,1,2),(5,'hoale889','hoa3332!','Le Thi Hoa','Thanh Hoa','1996-12-04','lehoa@gmail.com','0674356322','2022-06-11 15:26:15',2,0,2),(6,'nhathung99','hung342!','Pham Nhat Hung','Lai Chau','1991-11-19','hung@gmail.com','0346554678','2022-06-12 14:57:01',1,0,1),(7,'tuan123','tuan123!','Nguyen Tuan','Hai Duong','1994-09-01','tuan213@gmail.com','0456847455','2022-06-12 15:03:37',1,1,3),(8,'qynyna123','Pa$$w0rd!','Rose Kirkland','Ipsam consequatur B','2000-01-30','dehenoly@mailinator.com','0783465748','2022-06-12 21:26:44',1,0,2),(9,'ficipohyhu','Pa$$w0rd!','Petra Ferguson','Qui quam ea laborum','2010-09-29','vebeke@mailinator.com','0123146554','2022-06-13 16:42:30',1,0,1),(10,'laqagijhk','Pa$$w0rd!','Macey Mckinney','Sit est hic consequ','1983-01-24','zodoq@mailinator.com','07834657487','2022-06-14 11:03:33',1,0,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -66,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-13  8:03:13
+-- Dump completed on 2022-06-15  9:20:26

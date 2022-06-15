@@ -80,13 +80,7 @@
                                             <tr>
                                                 <th scope="row">2</th>
                                                 <td class="font-weight-bold">Gender</td>
-                                                <td>
-                                                    <c:forEach items="${genders}" var="gender">
-                                                        <c:if test="${user.getGender() == gender.getId()}">
-                                                            ${gender.getName()}
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </td>
+                                                <td>${user.getGender()}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">3</th>
@@ -118,13 +112,7 @@
                                             <tr>
                                                 <th scope="row">8</th>
                                                 <td class="font-weight-bold">Role</td>
-                                                <td>
-                                                    <c:forEach items="${roles}" var="role">
-                                                        <c:if test="${user.getRole() == role.getId()}">
-                                                            ${role.getCode()}
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </td>
+                                                <td>${user.getRole()}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">9</th>
@@ -151,11 +139,11 @@
                                     </table>
                                 </div>
                                 <div class="mt-3" >
-                                    <a title="Block this user" href="/users?action=block&id=${user.getId()}" class="btn btn-outline-danger">
+                                    <a id="btn-block"  title="Block this user" href="/users?action=block&id=${user.getId()}" class="btn btn-outline-danger">
                                             <i class="fas fa-user-lock"></i>
                                              Block
                                     </a>
-                                    <a title="Unblock this user" href="/users?action=unblock&id=${user.getId()}" class="btn btn-outline-purple">
+                                    <a id="btn-unblock" style="visibility: hidden" title="Unblock this user" href="/users?action=unblock&id=${user.getId()}" class="btn btn-outline-purple">
                                             <i class=" fas fa-user-check"></i>
                                              Unblock
                                     </a>
@@ -172,6 +160,14 @@
     </div>
 
 </div>
+
+<c:if test="${user.isBlocked()}">
+    <script>
+        document.querySelector("#btn-unblock").style.visibility="visible";
+        document.querySelector("#btn-block").style.display="none";
+    </script>
+</c:if>
+
 <c:if test="${error != null}">
     <script>
         iziToast.error({

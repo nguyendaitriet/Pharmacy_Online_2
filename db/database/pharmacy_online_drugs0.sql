@@ -38,7 +38,7 @@ CREATE TABLE `drugs` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `dosageForm_idx` (`dosageForm`),
   CONSTRAINT `dosageForm` FOREIGN KEY (`dosageForm`) REFERENCES `dosage_forms` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `drugs` (
 
 LOCK TABLES `drugs` WRITE;
 /*!40000 ALTER TABLE `drugs` DISABLE KEYS */;
-INSERT INTO `drugs` VALUES (1,'paracetamol',500,1000,600,'Headache',1,'2021-02-01','2024-02-01',NULL,0),(2,'diphenhydramine',50,1000,700,'Runny nose',2,'2022-05-22','2024-05-22',NULL,0),(3,'vitamin e',1000,500,750,NULL,2,'2021-02-01','2023-02-01',NULL,0),(4,'loratadine',10,1000,1450,'',1,'2022-01-15','2023-07-15',NULL,0);
+INSERT INTO `drugs` VALUES (1,'abc',500,0,900,'Headache',1,'2021-12-01','2024-02-01','',1),(2,'diphenhydramine',50,1000,700,'Runny nose',2,'2022-05-22','2024-05-22',NULL,0),(3,'vitamin e',1000,500,750,NULL,2,'2021-02-01','2023-02-01',NULL,0),(4,'loratadine',10,1000,1450,'',1,'2022-01-15','2023-07-15',NULL,0),(34,'noratidine',70,800,1600,'',4,'2021-12-13','2023-12-13','',0),(35,'vitamin d',500,1000,500,NULL,2,'2021-12-13','2023-12-13',NULL,0);
 /*!40000 ALTER TABLE `drugs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-13  8:03:12
+-- Dump completed on 2022-06-15  9:20:26

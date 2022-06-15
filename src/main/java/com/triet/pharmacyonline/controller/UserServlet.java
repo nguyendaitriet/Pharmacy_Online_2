@@ -1,6 +1,6 @@
 package com.triet.pharmacyonline.controller;
 
-import com.triet.pharmacyonline.model.User;
+import com.triet.pharmacyonline.dto.UserDTO;
 import com.triet.pharmacyonline.service.UserService;
 import com.triet.pharmacyonline.utils.ParsingValidationUtils;
 
@@ -54,17 +54,15 @@ public class UserServlet  extends HttpServlet {
         if (ParsingValidationUtils.isLongParsing(id)) {
             long validId = Long.parseLong(id);
             if (userService.isIdExisted(validId)) {
-                User currentUser = userService.findById(validId);
-                    if (currentUser.isBlocked() == choice) {
+                UserDTO currentUserDTO = userService.findByIdDTO(validId);
+                    if (currentUserDTO.isBlocked() == choice) {
                         request.setAttribute("error","This operation cannot be done!");
                     } else {
-                        userService.blockOrUnblockUser(currentUser, validId, choice);
+                        userService.blockOrUnblockUser(currentUserDTO, validId, choice);
                         request.setAttribute("successfully","Successful operation!");
                     }
 
-                    request.setAttribute("user", currentUser);
-                    request.setAttribute("genders", userService.getGenders());
-                    request.setAttribute("roles", userService.getRoles());
+                    request.setAttribute("user", currentUserDTO);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/user-management/detail.jsp");
                     dispatcher.forward(request,response);
                     return;
@@ -86,10 +84,7 @@ public class UserServlet  extends HttpServlet {
         if (ParsingValidationUtils.isLongParsing(id)) {
             long validId = Long.parseLong(id);
             if (userService.isIdExisted(validId)) {
-                request.setAttribute("user", userService.findById(validId));
-                request.setAttribute("genders", userService.getGenders());
-                request.setAttribute("roles", userService.getRoles());
-
+                request.setAttribute("user", userService.findByIdDTO(validId));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/user-management/detail.jsp");
                 dispatcher.forward(request,response);
                 return;

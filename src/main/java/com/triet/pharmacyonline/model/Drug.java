@@ -93,7 +93,6 @@ public class Drug {
     }
 
     @NotEmpty(message = "Drug Name must NOT be empty.")
-    //length
     @Length(max = 100, message = "Drug Name must be less than 100 letters")
     @Pattern(regexp = ValidationUtils.DRUG_NAME_REGEX,
             message = "Drug Name must NOT contain DIGIT, SPECIAL CHARACTER or redundant WHITESPACE.")
@@ -107,7 +106,7 @@ public class Drug {
 
     @NotNull(message = "Drug content must NOT be null.")
     @Min(value = 0, message = "Drug content must be at least 0.")
-    @Max(value = 1000000, message = "Drug content must not be higher than 1000000.")
+    @Max(value = 1000000, message = "Drug content must not be higher than 1,000,000.")
     public double getDrugContent() {
         return drugContent;
     }
@@ -118,7 +117,7 @@ public class Drug {
 
     @NotNull(message = "Quantity must NOT be null.")
     @Min(value = 0, message = "Quantity must be at least 0.")
-    @Max(value = 5000000, message = "Quantity must not be higher than 5000000.")
+    @Max(value = 5000000, message = "Quantity must not be higher than 5,000,000.")
     public int getQuantity() {
         return quantity;
     }
@@ -129,7 +128,7 @@ public class Drug {
 
     @NotNull(message = "Price must NOT be null.")
     @Min(value = 0, message = "Price must be at least 0.")
-    @Max(value = 100000000, message = "Price must not be higher than 100000000.")
+    @Max(value = 100000000, message = "Price must not be higher than 100,000,000.")
     public BigDecimal getPricePerPill() {
         return pricePerPill;
     }

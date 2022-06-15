@@ -32,7 +32,7 @@ public class AdminServlet extends HttpServlet {
             if (!user.isBlocked() && user.getRole().equals("User")) activeUsers++;
             if (user.isBlocked() && user.getRole().equals("User")) blockedUsers++;
             if (!user.isBlocked() && user.getRole().equals("Admin")) activeAdmins++;
-            if (user.isBlocked() && user.getRole().equals("User")) blockedAdmins++;
+            if (user.isBlocked() && user.getRole().equals("Admin")) blockedAdmins++;
         }
         request.setAttribute("totalAccounts",userList.size());
         request.setAttribute("activeUsers",activeUsers);

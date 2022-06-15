@@ -18,6 +18,7 @@ public class UserService implements IUserService {
     private static final String IS_EMAIL_EXISTED = "CALL sp_is_email_existed(?, ?)";
     private static final String IS_USERNAME_EXISTED = "CALL sp_is_username_existed(?, ?)";
     private static final String GET_USER_BY_ID = "CALL sp_find_user_by_id(?)";
+    private static final String GET_USER_BY_ID_DTO = "CALL sp_find_user_by_id_dto(?)";
     private static final String ROLES_LIST = "SELECT r.id,r.code,r.role FROM roles AS r;";
     private static final String GENDERS_LIST = "SELECT g.id,g.name FROM genders AS g;";
     private static final String BLOCK_UNBLOCK_USER = "CALL sp_block_or_unblock_user(?, ?)";
@@ -61,9 +62,22 @@ public class UserService implements IUserService {
         return new UserDTO(id, fullName, gender, phoneNumber, email, address, dateOfBirth, creationDate, role, username,blocked);
     }
 
+    public UserDTO findByIdDTO(long id) throws SQLException {
+        UserDTO currentUserDTO = new UserDTO();
+        Connection connection = MySQLConnUtils.getSqlConnection();
+        CallableStatement statement = connection.prepareCall(GET_USER_BY_ID_DTO);
+        statement.setLong(1, id);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            currentUserDTO = getUserDTO(rs);
+        }
+        return currentUserDTO;
+    }
+
+
     @Override
     public User findById(long id) throws SQLException {
-        User currentUser = null;
+        User currentUser = new User();
         Connection connection = MySQLConnUtils.getSqlConnection();
         CallableStatement statement = connection.prepareCall(GET_USER_BY_ID);
         statement.setLong(1, id);
@@ -122,12 +136,12 @@ public class UserService implements IUserService {
         return false;
     }
 
-    public void blockOrUnblockUser(User currentUser, long id, boolean block) throws SQLException {
+    public void blockOrUnblockUser(UserDTO currentUserDTO, long id, boolean block) throws SQLException {
         Connection connection = MySQLConnUtils.getSqlConnection();
         PreparedStatement statement = connection.prepareStatement(BLOCK_UNBLOCK_USER);
         statement.setLong(1, id);
         statement.setBoolean(2, block);
-        currentUser.setBlocked(block);
+        currentUserDTO.setBlocked(block);
         statement.execute();
     }
 

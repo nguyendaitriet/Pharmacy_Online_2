@@ -16,35 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `dosage_forms`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `dosage_forms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orders` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `grandTotal` decimal(10,0) NOT NULL,
+CREATE TABLE `dosage_forms` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `address` varchar(200) NOT NULL,
-  `creationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `userId` bigint NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `userId_idx` (`userId`),
-  CONSTRAINT `userId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `dosage_forms`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(2,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(3,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(4,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1),(5,450000,'Hoa','0154326235','Hue','2022-04-05 00:00:00',1);
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+LOCK TABLES `dosage_forms` WRITE;
+/*!40000 ALTER TABLE `dosage_forms` DISABLE KEYS */;
+INSERT INTO `dosage_forms` VALUES (1,'Capsule'),(2,'Tablet'),(3,'Syrups'),(4,'Powder'),(5,'Lozenges ');
+/*!40000 ALTER TABLE `dosage_forms` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-13  8:03:12
+-- Dump completed on 2022-06-15  9:20:26

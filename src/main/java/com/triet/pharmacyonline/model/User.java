@@ -48,7 +48,6 @@ public class User {
     }
 
     @NotNull(message = "Full Name must NOT be null.")
-    //length
     @Length (max = 100, message = "Full Name must be less than 100 letters")
     @Pattern(regexp = ValidationUtils.FULL_NAME_REGEX,
             message = "Full Name must only contain letters, capitalize first letter of each word and no redundant whitespace.")

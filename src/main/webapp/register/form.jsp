@@ -119,13 +119,13 @@
                                             <label for="username" class="col-md-4 col-form-label">Username <span class="text-danger">*</span></label>
                                             <input type="text" required="" class="form-control" id="username" placeholder="username"
                                                        value="${user.getUsername()}" name="username">
-                                            <span class="font-15 text-danger">Note: Username must start with A LETTER, other characters can be alphabets, numbers or an underscore and length constraint is from 8 to 20 characters</span>
+                                            <span class="font-15 text-info">Note: Username must start with A LETTER, other characters can be alphabets, numbers or an underscore and length constraint is from 8 to 20 characters</span>
                                         </div>
                                         <div class="form-group mt-3 col-md-7">
                                             <label for="hori-pass1" class="col-md-4 col-form-label">Password <span class="text-danger">*</span></label>
                                             <input id="hori-pass1" type="password" placeholder="Password" required="" class="form-control"
                                                        value="${user.getPassword()}">
-                                            <span class="font-15 text-danger">Note: Minimum eight characters, at least one letter, one number and one special character @$!%*#?&</span>
+                                            <span class="font-15 text-info">Note: Minimum eight characters, at least one letter, one number and one special character @$!%*#?&</span>
                                         </div>
                                         <div class="form-group mt-3 col-md-7">
                                             <label for="hori-pass2" class="col-md-4 col-form-label">Confirm Password <span class="text-danger">*</span></label>

@@ -80,6 +80,8 @@ public class User {
     }
 
     @NotNull(message = "Email Address must NOT be null.")
+    @Pattern(regexp = ValidationUtils.EMAIL_REGEX,
+            message = "Invalid Email Address format!")
     public String getEmail() {
         return email;
     }
@@ -103,14 +105,6 @@ public class User {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
     }
 
     public int getRole() {

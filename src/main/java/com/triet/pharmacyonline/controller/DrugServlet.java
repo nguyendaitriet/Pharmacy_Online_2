@@ -168,7 +168,7 @@ public class DrugServlet extends HttpServlet {
             } else parsingErrors.add("Invalid ID!");
         }
 
-        drug.setDrugName(request.getParameter("drugName").toLowerCase());
+        drug.setDrugName(request.getParameter("drugName").toLowerCase().trim());
 
         String drugContent = request.getParameter("drugContent");
 

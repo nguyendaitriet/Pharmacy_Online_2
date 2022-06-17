@@ -94,8 +94,8 @@ public class Drug {
 
     @NotEmpty(message = "Drug Name must NOT be empty.")
     @Length(max = 100, message = "Drug Name must be less than 100 letters")
-    @Pattern(regexp = ValidationUtils.DRUG_NAME_REGEX,
-            message = "Drug Name must NOT contain DIGIT, SPECIAL CHARACTER or redundant WHITESPACE.")
+    @Pattern(regexp = ValidationUtils.FULL_NAME_REGEX,
+            message = "Drug Name must only contain letters and capitalize first letter of each word.")
     public String getDrugName() {
         return drugName;
     }

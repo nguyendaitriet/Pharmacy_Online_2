@@ -8,7 +8,7 @@ public class MySQLConnUtils {
     public static Connection connectToMySQL() throws SQLException {
         String jdbcURL = "jdbc:mysql://localhost:3306/pharmacy_online";
         String jdbcUsername = "root";
-        String jdbcPassword = "quangvudien123!";
+        String jdbcPassword = "12345";
         return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
     }
 

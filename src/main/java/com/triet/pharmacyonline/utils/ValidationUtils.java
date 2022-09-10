@@ -22,7 +22,7 @@ public class ValidationUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String minDateString = "01/01/" + (currentYear - validRange);
         LocalDate minDate = LocalDate.parse(minDateString, formatter);
-        validProductionDate = minDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        validProductionDate = minDateString;
         return inputDate.isAfter(minDate) || inputDate.isEqual(minDate);
     }
 
@@ -32,7 +32,7 @@ public class ValidationUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String maxDateString = "31/12/" + (currentYear + validRange);
         LocalDate maxDate = LocalDate.parse(maxDateString, formatter);
-        validExpirationDate = maxDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        validExpirationDate = maxDateString;
         return inputDate.isBefore(maxDate) || inputDate.isEqual(maxDate);
     }
 
@@ -47,9 +47,10 @@ public class ValidationUtils {
         LocalDate minDateOfBirth = LocalDate.parse(minDateString,formatter);
         LocalDate maxDateOfBirth = LocalDate.parse(maxDateString,formatter);
 
-        minDateOfBirthValid = minDateOfBirth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        maxDateOfBirthValid = maxDateOfBirth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        minDateOfBirthValid = minDateString;
+        maxDateOfBirthValid = maxDateString;
         LocalDate dateOfBirth = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
         return (dateOfBirth.isAfter(minDateOfBirth) || dateOfBirth.isEqual(minDateOfBirth)) &&
                 (dateOfBirth.isBefore(maxDateOfBirth) ||dateOfBirth.isEqual(maxDateOfBirth));
     }

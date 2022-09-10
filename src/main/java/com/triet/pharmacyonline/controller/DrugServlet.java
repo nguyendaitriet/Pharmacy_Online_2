@@ -113,7 +113,7 @@ public class DrugServlet extends HttpServlet {
             case 1: {
 
                 if (constraintViolations.isEmpty() && parsingErrors.isEmpty()) {
-                    
+
                     if (!medicineService.isExisted(inputDrug)) {
 
                         if (medicineService.save(inputDrug)) {

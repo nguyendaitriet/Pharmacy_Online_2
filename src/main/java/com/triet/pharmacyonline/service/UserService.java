@@ -5,11 +5,10 @@ import com.triet.pharmacyonline.model.*;
 import com.triet.pharmacyonline.utils.MySQLConnUtils;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class UserService implements IUserService {
     private static final String USERS_LIST_DTO = "SELECT * FROM vw_users_list_dto;";
@@ -30,6 +29,7 @@ public class UserService implements IUserService {
     }
 
     public List<UserDTO> findAllDTO() {
+
         List<UserDTO> usersDTOList = new ArrayList<>();
         try {
             Connection connection = MySQLConnUtils.getSqlConnection();
@@ -198,6 +198,7 @@ public class UserService implements IUserService {
         } catch (SQLException e) {
             MySQLConnUtils.printSQLException(e);
         }
+
         return roles;
     }
 

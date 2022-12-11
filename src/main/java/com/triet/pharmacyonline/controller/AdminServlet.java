@@ -2,7 +2,6 @@ package com.triet.pharmacyonline.controller;
 
 import com.triet.pharmacyonline.dto.UserDTO;
 import com.triet.pharmacyonline.model.Drug;
-import com.triet.pharmacyonline.model.User;
 import com.triet.pharmacyonline.service.MedicineService;
 import com.triet.pharmacyonline.service.UserService;
 
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(name = "AdminServlet", value = "/admin")
@@ -24,6 +25,7 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<UserDTO> userList = userService.findAllDTO();
+
         int activeUsers = 0;
         int blockedUsers = 0;
         int activeAdmins = 0;
@@ -45,6 +47,7 @@ public class AdminServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/index.jsp");
         dispatcher.forward(request, response);
     }
+
 
 
 }

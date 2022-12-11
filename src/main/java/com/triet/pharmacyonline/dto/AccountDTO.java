@@ -1,5 +1,7 @@
 package com.triet.pharmacyonline.dto;
 
+import java.util.Arrays;
+
 public class AccountDTO {
     private int totalAccount;
     private int activeUser;
@@ -57,4 +59,5 @@ public class AccountDTO {
     public void setBlockedAdmin(int blockedAdmin) {
         this.blockedAdmin = blockedAdmin;
     }
+
 }
